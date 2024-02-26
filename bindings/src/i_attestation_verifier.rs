@@ -46,94 +46,6 @@ pub mod i_attestation_verifier {
                     ],
                 ),
                 (
-                    ::std::borrow::ToOwned::to_owned("safeVerify"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("safeVerify"),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("data"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                        },
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("safeVerify"),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("attestation"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("sourceEnclaveKey"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("enclaveKey"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("PCR0"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("PCR1"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("PCR2"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("enclaveCPUs"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("enclaveMemory"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                        },
-                    ],
-                ),
-                (
                     ::std::borrow::ToOwned::to_owned("verify"),
                     ::std::vec![
                         ::ethers::core::abi::ethabi::Function {
@@ -147,15 +59,7 @@ pub mod i_attestation_verifier {
                                     ),
                                 },
                             ],
-                            outputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::string::String::new(),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bool,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bool"),
-                                    ),
-                                },
-                            ],
+                            outputs: ::std::vec![],
                             constant: ::core::option::Option::None,
                             state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
                         },
@@ -170,17 +74,10 @@ pub mod i_attestation_verifier {
                                     ),
                                 },
                                 ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("sourceEnclaveKey"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
                                     name: ::std::borrow::ToOwned::to_owned("enclaveKey"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
                                     internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
+                                        ::std::borrow::ToOwned::to_owned("bytes"),
                                     ),
                                 },
                                 ::ethers::core::abi::ethabi::Param {
@@ -222,16 +119,17 @@ pub mod i_attestation_verifier {
                                         ::std::borrow::ToOwned::to_owned("uint256"),
                                     ),
                                 },
-                            ],
-                            outputs: ::std::vec![
                                 ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::string::String::new(),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bool,
+                                    name: ::std::borrow::ToOwned::to_owned("timestamp"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
                                     internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bool"),
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
                                     ),
                                 },
                             ],
+                            outputs: ::std::vec![],
                             constant: ::core::option::Option::None,
                             state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
                         },
@@ -296,76 +194,39 @@ pub mod i_attestation_verifier {
                 .method_hash([185, 32, 158, 51], signer)
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `safeVerify` (0x06d5a2ed) function
-        pub fn safe_verify(
-            &self,
-            data: ::ethers::core::types::Bytes,
-        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
-            self.0
-                .method_hash([6, 213, 162, 237], data)
-                .expect("method not found (this should never happen)")
-        }
-        ///Calls the contract's `safeVerify` (0x948b4459) function
-        pub fn safe_verify_with_attestation(
-            &self,
-            attestation: ::ethers::core::types::Bytes,
-            source_enclave_key: ::ethers::core::types::Address,
-            enclave_key: ::ethers::core::types::Address,
-            pcr0: ::ethers::core::types::Bytes,
-            pcr1: ::ethers::core::types::Bytes,
-            pcr2: ::ethers::core::types::Bytes,
-            enclave_cp_us: ::ethers::core::types::U256,
-            enclave_memory: ::ethers::core::types::U256,
-        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
-            self.0
-                .method_hash(
-                    [148, 139, 68, 89],
-                    (
-                        attestation,
-                        source_enclave_key,
-                        enclave_key,
-                        pcr0,
-                        pcr1,
-                        pcr2,
-                        enclave_cp_us,
-                        enclave_memory,
-                    ),
-                )
-                .expect("method not found (this should never happen)")
-        }
         ///Calls the contract's `verify` (0x8e760afe) function
         pub fn verify(
             &self,
             data: ::ethers::core::types::Bytes,
-        ) -> ::ethers::contract::builders::ContractCall<M, bool> {
+        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
                 .method_hash([142, 118, 10, 254], data)
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `verify` (0xb247499b) function
+        ///Calls the contract's `verify` (0xac0f0bd5) function
         pub fn verify_with_attestation(
             &self,
             attestation: ::ethers::core::types::Bytes,
-            source_enclave_key: ::ethers::core::types::Address,
-            enclave_key: ::ethers::core::types::Address,
+            enclave_key: ::ethers::core::types::Bytes,
             pcr0: ::ethers::core::types::Bytes,
             pcr1: ::ethers::core::types::Bytes,
             pcr2: ::ethers::core::types::Bytes,
             enclave_cp_us: ::ethers::core::types::U256,
             enclave_memory: ::ethers::core::types::U256,
-        ) -> ::ethers::contract::builders::ContractCall<M, bool> {
+            timestamp: ::ethers::core::types::U256,
+        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
                 .method_hash(
-                    [178, 71, 73, 155],
+                    [172, 15, 11, 213],
                     (
                         attestation,
-                        source_enclave_key,
                         enclave_key,
                         pcr0,
                         pcr1,
                         pcr2,
                         enclave_cp_us,
                         enclave_memory,
+                        timestamp,
                     ),
                 )
                 .expect("method not found (this should never happen)")
@@ -394,50 +255,6 @@ pub mod i_attestation_verifier {
     pub struct IsVerifiedCall {
         pub signer: ::ethers::core::types::Address,
     }
-    ///Container type for all input parameters for the `safeVerify` function with signature `safeVerify(bytes)` and selector `0x06d5a2ed`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthCall,
-        ::ethers::contract::EthDisplay,
-        serde::Serialize,
-        serde::Deserialize,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash
-    )]
-    #[ethcall(name = "safeVerify", abi = "safeVerify(bytes)")]
-    pub struct SafeVerifyCall {
-        pub data: ::ethers::core::types::Bytes,
-    }
-    ///Container type for all input parameters for the `safeVerify` function with signature `safeVerify(bytes,address,address,bytes,bytes,bytes,uint256,uint256)` and selector `0x948b4459`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthCall,
-        ::ethers::contract::EthDisplay,
-        serde::Serialize,
-        serde::Deserialize,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash
-    )]
-    #[ethcall(
-        name = "safeVerify",
-        abi = "safeVerify(bytes,address,address,bytes,bytes,bytes,uint256,uint256)"
-    )]
-    pub struct SafeVerifyWithAttestationCall {
-        pub attestation: ::ethers::core::types::Bytes,
-        pub source_enclave_key: ::ethers::core::types::Address,
-        pub enclave_key: ::ethers::core::types::Address,
-        pub pcr0: ::ethers::core::types::Bytes,
-        pub pcr1: ::ethers::core::types::Bytes,
-        pub pcr2: ::ethers::core::types::Bytes,
-        pub enclave_cp_us: ::ethers::core::types::U256,
-        pub enclave_memory: ::ethers::core::types::U256,
-    }
     ///Container type for all input parameters for the `verify` function with signature `verify(bytes)` and selector `0x8e760afe`
     #[derive(
         Clone,
@@ -455,7 +272,7 @@ pub mod i_attestation_verifier {
     pub struct VerifyCall {
         pub data: ::ethers::core::types::Bytes,
     }
-    ///Container type for all input parameters for the `verify` function with signature `verify(bytes,address,address,bytes,bytes,bytes,uint256,uint256)` and selector `0xb247499b`
+    ///Container type for all input parameters for the `verify` function with signature `verify(bytes,bytes,bytes,bytes,bytes,uint256,uint256,uint256)` and selector `0xac0f0bd5`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
@@ -470,17 +287,17 @@ pub mod i_attestation_verifier {
     )]
     #[ethcall(
         name = "verify",
-        abi = "verify(bytes,address,address,bytes,bytes,bytes,uint256,uint256)"
+        abi = "verify(bytes,bytes,bytes,bytes,bytes,uint256,uint256,uint256)"
     )]
     pub struct VerifyWithAttestationCall {
         pub attestation: ::ethers::core::types::Bytes,
-        pub source_enclave_key: ::ethers::core::types::Address,
-        pub enclave_key: ::ethers::core::types::Address,
+        pub enclave_key: ::ethers::core::types::Bytes,
         pub pcr0: ::ethers::core::types::Bytes,
         pub pcr1: ::ethers::core::types::Bytes,
         pub pcr2: ::ethers::core::types::Bytes,
         pub enclave_cp_us: ::ethers::core::types::U256,
         pub enclave_memory: ::ethers::core::types::U256,
+        pub timestamp: ::ethers::core::types::U256,
     }
     ///Container type for all of the contract's call
     #[derive(
@@ -495,8 +312,6 @@ pub mod i_attestation_verifier {
     )]
     pub enum IAttestationVerifierCalls {
         IsVerified(IsVerifiedCall),
-        SafeVerify(SafeVerifyCall),
-        SafeVerifyWithAttestation(SafeVerifyWithAttestationCall),
         Verify(VerifyCall),
         VerifyWithAttestation(VerifyWithAttestationCall),
     }
@@ -509,16 +324,6 @@ pub mod i_attestation_verifier {
                 data,
             ) {
                 return Ok(Self::IsVerified(decoded));
-            }
-            if let Ok(decoded) = <SafeVerifyCall as ::ethers::core::abi::AbiDecode>::decode(
-                data,
-            ) {
-                return Ok(Self::SafeVerify(decoded));
-            }
-            if let Ok(decoded) = <SafeVerifyWithAttestationCall as ::ethers::core::abi::AbiDecode>::decode(
-                data,
-            ) {
-                return Ok(Self::SafeVerifyWithAttestation(decoded));
             }
             if let Ok(decoded) = <VerifyCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
@@ -539,12 +344,6 @@ pub mod i_attestation_verifier {
                 Self::IsVerified(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::SafeVerify(element) => {
-                    ::ethers::core::abi::AbiEncode::encode(element)
-                }
-                Self::SafeVerifyWithAttestation(element) => {
-                    ::ethers::core::abi::AbiEncode::encode(element)
-                }
                 Self::Verify(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::VerifyWithAttestation(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
@@ -556,10 +355,6 @@ pub mod i_attestation_verifier {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
                 Self::IsVerified(element) => ::core::fmt::Display::fmt(element, f),
-                Self::SafeVerify(element) => ::core::fmt::Display::fmt(element, f),
-                Self::SafeVerifyWithAttestation(element) => {
-                    ::core::fmt::Display::fmt(element, f)
-                }
                 Self::Verify(element) => ::core::fmt::Display::fmt(element, f),
                 Self::VerifyWithAttestation(element) => {
                     ::core::fmt::Display::fmt(element, f)
@@ -570,17 +365,6 @@ pub mod i_attestation_verifier {
     impl ::core::convert::From<IsVerifiedCall> for IAttestationVerifierCalls {
         fn from(value: IsVerifiedCall) -> Self {
             Self::IsVerified(value)
-        }
-    }
-    impl ::core::convert::From<SafeVerifyCall> for IAttestationVerifierCalls {
-        fn from(value: SafeVerifyCall) -> Self {
-            Self::SafeVerify(value)
-        }
-    }
-    impl ::core::convert::From<SafeVerifyWithAttestationCall>
-    for IAttestationVerifierCalls {
-        fn from(value: SafeVerifyWithAttestationCall) -> Self {
-            Self::SafeVerifyWithAttestation(value)
         }
     }
     impl ::core::convert::From<VerifyCall> for IAttestationVerifierCalls {
@@ -607,32 +391,4 @@ pub mod i_attestation_verifier {
         Hash
     )]
     pub struct IsVerifiedReturn(pub [u8; 32]);
-    ///Container type for all return fields from the `verify` function with signature `verify(bytes)` and selector `0x8e760afe`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthAbiType,
-        ::ethers::contract::EthAbiCodec,
-        serde::Serialize,
-        serde::Deserialize,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash
-    )]
-    pub struct VerifyReturn(pub bool);
-    ///Container type for all return fields from the `verify` function with signature `verify(bytes,address,address,bytes,bytes,bytes,uint256,uint256)` and selector `0xb247499b`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthAbiType,
-        ::ethers::contract::EthAbiCodec,
-        serde::Serialize,
-        serde::Deserialize,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash
-    )]
-    pub struct VerifyWithAttestationReturn(pub bool);
 }

@@ -38,10 +38,10 @@ pub mod i_verifier {
                     ],
                 ),
                 (
-                    ::std::borrow::ToOwned::to_owned("proofMarketPlace"),
+                    ::std::borrow::ToOwned::to_owned("proofMarketplace"),
                     ::std::vec![
                         ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("proofMarketPlace"),
+                            name: ::std::borrow::ToOwned::to_owned("proofMarketplace"),
                             inputs: ::std::vec![],
                             outputs: ::std::vec![
                                 ::ethers::core::abi::ethabi::Param {
@@ -49,7 +49,7 @@ pub mod i_verifier {
                                     kind: ::ethers::core::abi::ethabi::ParamType::Address,
                                     internal_type: ::core::option::Option::Some(
                                         ::std::borrow::ToOwned::to_owned(
-                                            "contract ProofMarketPlace",
+                                            "contract ProofMarketplace",
                                         ),
                                     ),
                                 },
@@ -100,11 +100,11 @@ pub mod i_verifier {
                     ],
                 ),
                 (
-                    ::std::borrow::ToOwned::to_owned("setProofMarketPlaceContract"),
+                    ::std::borrow::ToOwned::to_owned("setProofMarketplaceContract"),
                     ::std::vec![
                         ::ethers::core::abi::ethabi::Function {
                             name: ::std::borrow::ToOwned::to_owned(
-                                "setProofMarketPlaceContract",
+                                "setProofMarketplaceContract",
                             ),
                             inputs: ::std::vec![
                                 ::ethers::core::abi::ethabi::Param {
@@ -112,7 +112,7 @@ pub mod i_verifier {
                                     kind: ::ethers::core::abi::ethabi::ParamType::Address,
                                     internal_type: ::core::option::Option::Some(
                                         ::std::borrow::ToOwned::to_owned(
-                                            "contract ProofMarketPlace",
+                                            "contract ProofMarketplace",
                                         ),
                                     ),
                                 },
@@ -267,15 +267,15 @@ pub mod i_verifier {
                 .method_hash([16, 165, 66, 121], ())
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `proofMarketPlace` (0x732a9d63) function
-        pub fn proof_market_place(
+        ///Calls the contract's `proofMarketplace` (0x81c45c70) function
+        pub fn proof_marketplace(
             &self,
         ) -> ::ethers::contract::builders::ContractCall<
             M,
             ::ethers::core::types::Address,
         > {
             self.0
-                .method_hash([115, 42, 157, 99], ())
+                .method_hash([129, 196, 92, 112], ())
                 .expect("method not found (this should never happen)")
         }
         ///Calls the contract's `sampleInput` (0x7d8ad42b) function
@@ -300,13 +300,13 @@ pub mod i_verifier {
                 .method_hash([167, 108, 5, 81], ())
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `setProofMarketPlaceContract` (0xc46fc3ef) function
-        pub fn set_proof_market_place_contract(
+        ///Calls the contract's `setProofMarketplaceContract` (0x056de704) function
+        pub fn set_proof_marketplace_contract(
             &self,
             proof_marketplace: ::ethers::core::types::Address,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([196, 111, 195, 239], proof_marketplace)
+                .method_hash([5, 109, 231, 4], proof_marketplace)
                 .expect("method not found (this should never happen)")
         }
         ///Calls the contract's `verify` (0x8e760afe) function
@@ -358,7 +358,7 @@ pub mod i_verifier {
     )]
     #[ethcall(name = "checkSampleInputsAndProof", abi = "checkSampleInputsAndProof()")]
     pub struct CheckSampleInputsAndProofCall;
-    ///Container type for all input parameters for the `proofMarketPlace` function with signature `proofMarketPlace()` and selector `0x732a9d63`
+    ///Container type for all input parameters for the `proofMarketplace` function with signature `proofMarketplace()` and selector `0x81c45c70`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
@@ -371,8 +371,8 @@ pub mod i_verifier {
         Eq,
         Hash
     )]
-    #[ethcall(name = "proofMarketPlace", abi = "proofMarketPlace()")]
-    pub struct ProofMarketPlaceCall;
+    #[ethcall(name = "proofMarketplace", abi = "proofMarketplace()")]
+    pub struct ProofMarketplaceCall;
     ///Container type for all input parameters for the `sampleInput` function with signature `sampleInput()` and selector `0x7d8ad42b`
     #[derive(
         Clone,
@@ -403,7 +403,7 @@ pub mod i_verifier {
     )]
     #[ethcall(name = "sampleProof", abi = "sampleProof()")]
     pub struct SampleProofCall;
-    ///Container type for all input parameters for the `setProofMarketPlaceContract` function with signature `setProofMarketPlaceContract(address)` and selector `0xc46fc3ef`
+    ///Container type for all input parameters for the `setProofMarketplaceContract` function with signature `setProofMarketplaceContract(address)` and selector `0x056de704`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
@@ -417,10 +417,10 @@ pub mod i_verifier {
         Hash
     )]
     #[ethcall(
-        name = "setProofMarketPlaceContract",
-        abi = "setProofMarketPlaceContract(address)"
+        name = "setProofMarketplaceContract",
+        abi = "setProofMarketplaceContract(address)"
     )]
-    pub struct SetProofMarketPlaceContractCall {
+    pub struct SetProofMarketplaceContractCall {
         pub proof_marketplace: ::ethers::core::types::Address,
     }
     ///Container type for all input parameters for the `verify` function with signature `verify(bytes)` and selector `0x8e760afe`
@@ -490,10 +490,10 @@ pub mod i_verifier {
     )]
     pub enum IVerifierCalls {
         CheckSampleInputsAndProof(CheckSampleInputsAndProofCall),
-        ProofMarketPlace(ProofMarketPlaceCall),
+        ProofMarketplace(ProofMarketplaceCall),
         SampleInput(SampleInputCall),
         SampleProof(SampleProofCall),
-        SetProofMarketPlaceContract(SetProofMarketPlaceContractCall),
+        SetProofMarketplaceContract(SetProofMarketplaceContractCall),
         Verify(VerifyCall),
         VerifyAgainstSampleInputs(VerifyAgainstSampleInputsCall),
         VerifyInputs(VerifyInputsCall),
@@ -508,10 +508,10 @@ pub mod i_verifier {
             ) {
                 return Ok(Self::CheckSampleInputsAndProof(decoded));
             }
-            if let Ok(decoded) = <ProofMarketPlaceCall as ::ethers::core::abi::AbiDecode>::decode(
+            if let Ok(decoded) = <ProofMarketplaceCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
             ) {
-                return Ok(Self::ProofMarketPlace(decoded));
+                return Ok(Self::ProofMarketplace(decoded));
             }
             if let Ok(decoded) = <SampleInputCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
@@ -523,10 +523,10 @@ pub mod i_verifier {
             ) {
                 return Ok(Self::SampleProof(decoded));
             }
-            if let Ok(decoded) = <SetProofMarketPlaceContractCall as ::ethers::core::abi::AbiDecode>::decode(
+            if let Ok(decoded) = <SetProofMarketplaceContractCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
             ) {
-                return Ok(Self::SetProofMarketPlaceContract(decoded));
+                return Ok(Self::SetProofMarketplaceContract(decoded));
             }
             if let Ok(decoded) = <VerifyCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
@@ -552,7 +552,7 @@ pub mod i_verifier {
                 Self::CheckSampleInputsAndProof(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::ProofMarketPlace(element) => {
+                Self::ProofMarketplace(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
                 Self::SampleInput(element) => {
@@ -561,7 +561,7 @@ pub mod i_verifier {
                 Self::SampleProof(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::SetProofMarketPlaceContract(element) => {
+                Self::SetProofMarketplaceContract(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
                 Self::Verify(element) => ::ethers::core::abi::AbiEncode::encode(element),
@@ -580,10 +580,10 @@ pub mod i_verifier {
                 Self::CheckSampleInputsAndProof(element) => {
                     ::core::fmt::Display::fmt(element, f)
                 }
-                Self::ProofMarketPlace(element) => ::core::fmt::Display::fmt(element, f),
+                Self::ProofMarketplace(element) => ::core::fmt::Display::fmt(element, f),
                 Self::SampleInput(element) => ::core::fmt::Display::fmt(element, f),
                 Self::SampleProof(element) => ::core::fmt::Display::fmt(element, f),
-                Self::SetProofMarketPlaceContract(element) => {
+                Self::SetProofMarketplaceContract(element) => {
                     ::core::fmt::Display::fmt(element, f)
                 }
                 Self::Verify(element) => ::core::fmt::Display::fmt(element, f),
@@ -599,9 +599,9 @@ pub mod i_verifier {
             Self::CheckSampleInputsAndProof(value)
         }
     }
-    impl ::core::convert::From<ProofMarketPlaceCall> for IVerifierCalls {
-        fn from(value: ProofMarketPlaceCall) -> Self {
-            Self::ProofMarketPlace(value)
+    impl ::core::convert::From<ProofMarketplaceCall> for IVerifierCalls {
+        fn from(value: ProofMarketplaceCall) -> Self {
+            Self::ProofMarketplace(value)
         }
     }
     impl ::core::convert::From<SampleInputCall> for IVerifierCalls {
@@ -614,9 +614,9 @@ pub mod i_verifier {
             Self::SampleProof(value)
         }
     }
-    impl ::core::convert::From<SetProofMarketPlaceContractCall> for IVerifierCalls {
-        fn from(value: SetProofMarketPlaceContractCall) -> Self {
-            Self::SetProofMarketPlaceContract(value)
+    impl ::core::convert::From<SetProofMarketplaceContractCall> for IVerifierCalls {
+        fn from(value: SetProofMarketplaceContractCall) -> Self {
+            Self::SetProofMarketplaceContract(value)
         }
     }
     impl ::core::convert::From<VerifyCall> for IVerifierCalls {
@@ -648,7 +648,7 @@ pub mod i_verifier {
         Hash
     )]
     pub struct CheckSampleInputsAndProofReturn(pub bool);
-    ///Container type for all return fields from the `proofMarketPlace` function with signature `proofMarketPlace()` and selector `0x732a9d63`
+    ///Container type for all return fields from the `proofMarketplace` function with signature `proofMarketplace()` and selector `0x81c45c70`
     #[derive(
         Clone,
         ::ethers::contract::EthAbiType,
@@ -661,7 +661,7 @@ pub mod i_verifier {
         Eq,
         Hash
     )]
-    pub struct ProofMarketPlaceReturn(pub ::ethers::core::types::Address);
+    pub struct ProofMarketplaceReturn(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `sampleInput` function with signature `sampleInput()` and selector `0x7d8ad42b`
     #[derive(
         Clone,
