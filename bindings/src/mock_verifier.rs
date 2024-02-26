@@ -38,10 +38,10 @@ pub mod mock_verifier {
                     ],
                 ),
                 (
-                    ::std::borrow::ToOwned::to_owned("proofMarketPlace"),
+                    ::std::borrow::ToOwned::to_owned("proofMarketplace"),
                     ::std::vec![
                         ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("proofMarketPlace"),
+                            name: ::std::borrow::ToOwned::to_owned("proofMarketplace"),
                             inputs: ::std::vec![],
                             outputs: ::std::vec![
                                 ::ethers::core::abi::ethabi::Param {
@@ -49,7 +49,7 @@ pub mod mock_verifier {
                                     kind: ::ethers::core::abi::ethabi::ParamType::Address,
                                     internal_type: ::core::option::Option::Some(
                                         ::std::borrow::ToOwned::to_owned(
-                                            "contract ProofMarketPlace",
+                                            "contract ProofMarketplace",
                                         ),
                                     ),
                                 },
@@ -100,11 +100,11 @@ pub mod mock_verifier {
                     ],
                 ),
                 (
-                    ::std::borrow::ToOwned::to_owned("setProofMarketPlaceContract"),
+                    ::std::borrow::ToOwned::to_owned("setProofMarketplaceContract"),
                     ::std::vec![
                         ::ethers::core::abi::ethabi::Function {
                             name: ::std::borrow::ToOwned::to_owned(
-                                "setProofMarketPlaceContract",
+                                "setProofMarketplaceContract",
                             ),
                             inputs: ::std::vec![
                                 ::ethers::core::abi::ethabi::Param {
@@ -112,7 +112,7 @@ pub mod mock_verifier {
                                     kind: ::ethers::core::abi::ethabi::ParamType::Address,
                                     internal_type: ::core::option::Option::Some(
                                         ::std::borrow::ToOwned::to_owned(
-                                            "contract ProofMarketPlace",
+                                            "contract ProofMarketplace",
                                         ),
                                     ),
                                 },
@@ -221,13 +221,13 @@ pub mod mock_verifier {
         __abi,
     );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[Pa\x04_\x80a\0 `\09`\0\xF3\xFE`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0\x88W`\x005`\xE0\x1C\x80c\x8Ev\n\xFE\x11a\0[W\x80c\x8Ev\n\xFE\x14a\0\xFDW\x80c\xA6\xDF\xBC\x7F\x14a\0\xFDW\x80c\xA7l\x05Q\x14a\x01\x13W\x80c\xC4o\xC3\xEF\x14a\x01\x1BW`\0\x80\xFD[\x80c\x02\xF7}\x19\x14a\0\x8DW\x80c\x10\xA5By\x14a\0\xB6W\x80cs*\x9Dc\x14a\0\xBDW\x80c}\x8A\xD4+\x14a\0\xE8W[`\0\x80\xFD[a\0\xA1a\0\x9B6`\x04a\x02NV[P`\x01\x90V[`@Q\x90\x15\x15\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[`\x01a\0\xA1V[`\0Ta\0\xD0\x90`\x01`\x01`\xA0\x1B\x03\x16\x81V[`@Q`\x01`\x01`\xA0\x1B\x03\x90\x91\x16\x81R` \x01a\0\xADV[a\0\xF0a\x010V[`@Qa\0\xAD\x91\x90a\x02\xFFV[a\0\xA1a\x01\x0B6`\x04a\x03MV[`\x01\x92\x91PPV[a\0\xF0a\x01\xBEV[a\x01.a\x01)6`\x04a\x03\xBFV[a\x01\xCBV[\0[`\x01\x80Ta\x01=\x90a\x03\xEFV[\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x92\x91\x90\x81\x81R` \x01\x82\x80Ta\x01i\x90a\x03\xEFV[\x80\x15a\x01\xB6W\x80`\x1F\x10a\x01\x8BWa\x01\0\x80\x83T\x04\x02\x83R\x91` \x01\x91a\x01\xB6V[\x82\x01\x91\x90`\0R` `\0 \x90[\x81T\x81R\x90`\x01\x01\x90` \x01\x80\x83\x11a\x01\x99W\x82\x90\x03`\x1F\x16\x82\x01\x91[PPPPP\x81V[`\x02\x80Ta\x01=\x90a\x03\xEFV[`\0T`\x01`\x01`\xA0\x1B\x03\x16\x15a\x02\x16W`@QbF\x1B\xCD`\xE5\x1B\x81R` `\x04\x82\x01R`\x0B`$\x82\x01Rj\x10[\x1C\x99XY\x1EH\x14\xD9]`\xAA\x1B`D\x82\x01R`d\x01`@Q\x80\x91\x03\x90\xFD[`\0\x80T`\x01`\x01`\xA0\x1B\x03\x19\x16`\x01`\x01`\xA0\x1B\x03\x92\x90\x92\x16\x91\x90\x91\x17\x90UV[cNH{q`\xE0\x1B`\0R`A`\x04R`$`\0\xFD[`\0` \x82\x84\x03\x12\x15a\x02`W`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x02xW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\x02\x8CW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x02\x9EWa\x02\x9Ea\x028V[`@Q`\x1F\x82\x01`\x1F\x19\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\x02\xC6Wa\x02\xC6a\x028V[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\x02\xDFW`\0\x80\xFD[\x82` \x86\x01` \x83\x017`\0\x92\x81\x01` \x01\x92\x90\x92RP\x95\x94PPPPPV[`\0` \x80\x83R\x83Q\x80\x82\x85\x01R`\0[\x81\x81\x10\x15a\x03,W\x85\x81\x01\x83\x01Q\x85\x82\x01`@\x01R\x82\x01a\x03\x10V[P`\0`@\x82\x86\x01\x01R`@`\x1F\x19`\x1F\x83\x01\x16\x85\x01\x01\x92PPP\x92\x91PPV[`\0\x80` \x83\x85\x03\x12\x15a\x03`W`\0\x80\xFD[\x825g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x03xW`\0\x80\xFD[\x81\x85\x01\x91P\x85`\x1F\x83\x01\x12a\x03\x8CW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x03\x9BW`\0\x80\xFD[\x86` \x82\x85\x01\x01\x11\x15a\x03\xADW`\0\x80\xFD[` \x92\x90\x92\x01\x96\x91\x95P\x90\x93PPPPV[`\0` \x82\x84\x03\x12\x15a\x03\xD1W`\0\x80\xFD[\x815`\x01`\x01`\xA0\x1B\x03\x81\x16\x81\x14a\x03\xE8W`\0\x80\xFD[\x93\x92PPPV[`\x01\x81\x81\x1C\x90\x82\x16\x80a\x04\x03W`\x7F\x82\x16\x91P[` \x82\x10\x81\x03a\x04#WcNH{q`\xE0\x1B`\0R`\"`\x04R`$`\0\xFD[P\x91\x90PV\xFE\xA2dipfsX\"\x12 \xEBc\x90\"H\xD0.\xC0N\x08\xCAKr#\xBD\xBE\x11h\xF3u\xA7\x91\xAD\xCB+c[\x05\xC7e\xCC\x12dsolcC\0\x08\x14\x003";
+    const __BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[Pa\x04_\x80a\0 `\09`\0\xF3\xFE`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0\x88W`\x005`\xE0\x1C\x80c\x81\xC4\\p\x11a\0[W\x80c\x81\xC4\\p\x14a\0\xE7W\x80c\x8Ev\n\xFE\x14a\x01\x12W\x80c\xA6\xDF\xBC\x7F\x14a\x01\x12W\x80c\xA7l\x05Q\x14a\x01(W`\0\x80\xFD[\x80c\x02\xF7}\x19\x14a\0\x8DW\x80c\x05m\xE7\x04\x14a\0\xB6W\x80c\x10\xA5By\x14a\0\xCBW\x80c}\x8A\xD4+\x14a\0\xD2W[`\0\x80\xFD[a\0\xA1a\0\x9B6`\x04a\x02NV[P`\x01\x90V[`@Q\x90\x15\x15\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[a\0\xC9a\0\xC46`\x04a\x02\xFFV[a\x010V[\0[`\x01a\0\xA1V[a\0\xDAa\x01\x9DV[`@Qa\0\xAD\x91\x90a\x03/V[`\0Ta\0\xFA\x90`\x01`\x01`\xA0\x1B\x03\x16\x81V[`@Q`\x01`\x01`\xA0\x1B\x03\x90\x91\x16\x81R` \x01a\0\xADV[a\0\xA1a\x01 6`\x04a\x03}V[`\x01\x92\x91PPV[a\0\xDAa\x02+V[`\0T`\x01`\x01`\xA0\x1B\x03\x16\x15a\x01{W`@QbF\x1B\xCD`\xE5\x1B\x81R` `\x04\x82\x01R`\x0B`$\x82\x01Rj\x10[\x1C\x99XY\x1EH\x14\xD9]`\xAA\x1B`D\x82\x01R`d\x01`@Q\x80\x91\x03\x90\xFD[`\0\x80T`\x01`\x01`\xA0\x1B\x03\x19\x16`\x01`\x01`\xA0\x1B\x03\x92\x90\x92\x16\x91\x90\x91\x17\x90UV[`\x01\x80Ta\x01\xAA\x90a\x03\xEFV[\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x92\x91\x90\x81\x81R` \x01\x82\x80Ta\x01\xD6\x90a\x03\xEFV[\x80\x15a\x02#W\x80`\x1F\x10a\x01\xF8Wa\x01\0\x80\x83T\x04\x02\x83R\x91` \x01\x91a\x02#V[\x82\x01\x91\x90`\0R` `\0 \x90[\x81T\x81R\x90`\x01\x01\x90` \x01\x80\x83\x11a\x02\x06W\x82\x90\x03`\x1F\x16\x82\x01\x91[PPPPP\x81V[`\x02\x80Ta\x01\xAA\x90a\x03\xEFV[cNH{q`\xE0\x1B`\0R`A`\x04R`$`\0\xFD[`\0` \x82\x84\x03\x12\x15a\x02`W`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x02xW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\x02\x8CW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x02\x9EWa\x02\x9Ea\x028V[`@Q`\x1F\x82\x01`\x1F\x19\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\x02\xC6Wa\x02\xC6a\x028V[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\x02\xDFW`\0\x80\xFD[\x82` \x86\x01` \x83\x017`\0\x92\x81\x01` \x01\x92\x90\x92RP\x95\x94PPPPPV[`\0` \x82\x84\x03\x12\x15a\x03\x11W`\0\x80\xFD[\x815`\x01`\x01`\xA0\x1B\x03\x81\x16\x81\x14a\x03(W`\0\x80\xFD[\x93\x92PPPV[`\0` \x80\x83R\x83Q\x80\x82\x85\x01R`\0[\x81\x81\x10\x15a\x03\\W\x85\x81\x01\x83\x01Q\x85\x82\x01`@\x01R\x82\x01a\x03@V[P`\0`@\x82\x86\x01\x01R`@`\x1F\x19`\x1F\x83\x01\x16\x85\x01\x01\x92PPP\x92\x91PPV[`\0\x80` \x83\x85\x03\x12\x15a\x03\x90W`\0\x80\xFD[\x825g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x03\xA8W`\0\x80\xFD[\x81\x85\x01\x91P\x85`\x1F\x83\x01\x12a\x03\xBCW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x03\xCBW`\0\x80\xFD[\x86` \x82\x85\x01\x01\x11\x15a\x03\xDDW`\0\x80\xFD[` \x92\x90\x92\x01\x96\x91\x95P\x90\x93PPPPV[`\x01\x81\x81\x1C\x90\x82\x16\x80a\x04\x03W`\x7F\x82\x16\x91P[` \x82\x10\x81\x03a\x04#WcNH{q`\xE0\x1B`\0R`\"`\x04R`$`\0\xFD[P\x91\x90PV\xFE\xA2dipfsX\"\x12 \xA4\xFDB\xF5'xn\x7F\x9C^\x08}\xD8)P\x1A\xC4\x8D\x98\x81Q\xD0.\x18\xC8]=r;\xBA\x02\x97dsolcC\0\x08\x14\x003";
     /// The bytecode of the contract.
     pub static MOCKVERIFIER_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
         __BYTECODE,
     );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0\x88W`\x005`\xE0\x1C\x80c\x8Ev\n\xFE\x11a\0[W\x80c\x8Ev\n\xFE\x14a\0\xFDW\x80c\xA6\xDF\xBC\x7F\x14a\0\xFDW\x80c\xA7l\x05Q\x14a\x01\x13W\x80c\xC4o\xC3\xEF\x14a\x01\x1BW`\0\x80\xFD[\x80c\x02\xF7}\x19\x14a\0\x8DW\x80c\x10\xA5By\x14a\0\xB6W\x80cs*\x9Dc\x14a\0\xBDW\x80c}\x8A\xD4+\x14a\0\xE8W[`\0\x80\xFD[a\0\xA1a\0\x9B6`\x04a\x02NV[P`\x01\x90V[`@Q\x90\x15\x15\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[`\x01a\0\xA1V[`\0Ta\0\xD0\x90`\x01`\x01`\xA0\x1B\x03\x16\x81V[`@Q`\x01`\x01`\xA0\x1B\x03\x90\x91\x16\x81R` \x01a\0\xADV[a\0\xF0a\x010V[`@Qa\0\xAD\x91\x90a\x02\xFFV[a\0\xA1a\x01\x0B6`\x04a\x03MV[`\x01\x92\x91PPV[a\0\xF0a\x01\xBEV[a\x01.a\x01)6`\x04a\x03\xBFV[a\x01\xCBV[\0[`\x01\x80Ta\x01=\x90a\x03\xEFV[\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x92\x91\x90\x81\x81R` \x01\x82\x80Ta\x01i\x90a\x03\xEFV[\x80\x15a\x01\xB6W\x80`\x1F\x10a\x01\x8BWa\x01\0\x80\x83T\x04\x02\x83R\x91` \x01\x91a\x01\xB6V[\x82\x01\x91\x90`\0R` `\0 \x90[\x81T\x81R\x90`\x01\x01\x90` \x01\x80\x83\x11a\x01\x99W\x82\x90\x03`\x1F\x16\x82\x01\x91[PPPPP\x81V[`\x02\x80Ta\x01=\x90a\x03\xEFV[`\0T`\x01`\x01`\xA0\x1B\x03\x16\x15a\x02\x16W`@QbF\x1B\xCD`\xE5\x1B\x81R` `\x04\x82\x01R`\x0B`$\x82\x01Rj\x10[\x1C\x99XY\x1EH\x14\xD9]`\xAA\x1B`D\x82\x01R`d\x01`@Q\x80\x91\x03\x90\xFD[`\0\x80T`\x01`\x01`\xA0\x1B\x03\x19\x16`\x01`\x01`\xA0\x1B\x03\x92\x90\x92\x16\x91\x90\x91\x17\x90UV[cNH{q`\xE0\x1B`\0R`A`\x04R`$`\0\xFD[`\0` \x82\x84\x03\x12\x15a\x02`W`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x02xW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\x02\x8CW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x02\x9EWa\x02\x9Ea\x028V[`@Q`\x1F\x82\x01`\x1F\x19\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\x02\xC6Wa\x02\xC6a\x028V[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\x02\xDFW`\0\x80\xFD[\x82` \x86\x01` \x83\x017`\0\x92\x81\x01` \x01\x92\x90\x92RP\x95\x94PPPPPV[`\0` \x80\x83R\x83Q\x80\x82\x85\x01R`\0[\x81\x81\x10\x15a\x03,W\x85\x81\x01\x83\x01Q\x85\x82\x01`@\x01R\x82\x01a\x03\x10V[P`\0`@\x82\x86\x01\x01R`@`\x1F\x19`\x1F\x83\x01\x16\x85\x01\x01\x92PPP\x92\x91PPV[`\0\x80` \x83\x85\x03\x12\x15a\x03`W`\0\x80\xFD[\x825g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x03xW`\0\x80\xFD[\x81\x85\x01\x91P\x85`\x1F\x83\x01\x12a\x03\x8CW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x03\x9BW`\0\x80\xFD[\x86` \x82\x85\x01\x01\x11\x15a\x03\xADW`\0\x80\xFD[` \x92\x90\x92\x01\x96\x91\x95P\x90\x93PPPPV[`\0` \x82\x84\x03\x12\x15a\x03\xD1W`\0\x80\xFD[\x815`\x01`\x01`\xA0\x1B\x03\x81\x16\x81\x14a\x03\xE8W`\0\x80\xFD[\x93\x92PPPV[`\x01\x81\x81\x1C\x90\x82\x16\x80a\x04\x03W`\x7F\x82\x16\x91P[` \x82\x10\x81\x03a\x04#WcNH{q`\xE0\x1B`\0R`\"`\x04R`$`\0\xFD[P\x91\x90PV\xFE\xA2dipfsX\"\x12 \xEBc\x90\"H\xD0.\xC0N\x08\xCAKr#\xBD\xBE\x11h\xF3u\xA7\x91\xAD\xCB+c[\x05\xC7e\xCC\x12dsolcC\0\x08\x14\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0\x88W`\x005`\xE0\x1C\x80c\x81\xC4\\p\x11a\0[W\x80c\x81\xC4\\p\x14a\0\xE7W\x80c\x8Ev\n\xFE\x14a\x01\x12W\x80c\xA6\xDF\xBC\x7F\x14a\x01\x12W\x80c\xA7l\x05Q\x14a\x01(W`\0\x80\xFD[\x80c\x02\xF7}\x19\x14a\0\x8DW\x80c\x05m\xE7\x04\x14a\0\xB6W\x80c\x10\xA5By\x14a\0\xCBW\x80c}\x8A\xD4+\x14a\0\xD2W[`\0\x80\xFD[a\0\xA1a\0\x9B6`\x04a\x02NV[P`\x01\x90V[`@Q\x90\x15\x15\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[a\0\xC9a\0\xC46`\x04a\x02\xFFV[a\x010V[\0[`\x01a\0\xA1V[a\0\xDAa\x01\x9DV[`@Qa\0\xAD\x91\x90a\x03/V[`\0Ta\0\xFA\x90`\x01`\x01`\xA0\x1B\x03\x16\x81V[`@Q`\x01`\x01`\xA0\x1B\x03\x90\x91\x16\x81R` \x01a\0\xADV[a\0\xA1a\x01 6`\x04a\x03}V[`\x01\x92\x91PPV[a\0\xDAa\x02+V[`\0T`\x01`\x01`\xA0\x1B\x03\x16\x15a\x01{W`@QbF\x1B\xCD`\xE5\x1B\x81R` `\x04\x82\x01R`\x0B`$\x82\x01Rj\x10[\x1C\x99XY\x1EH\x14\xD9]`\xAA\x1B`D\x82\x01R`d\x01`@Q\x80\x91\x03\x90\xFD[`\0\x80T`\x01`\x01`\xA0\x1B\x03\x19\x16`\x01`\x01`\xA0\x1B\x03\x92\x90\x92\x16\x91\x90\x91\x17\x90UV[`\x01\x80Ta\x01\xAA\x90a\x03\xEFV[\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x92\x91\x90\x81\x81R` \x01\x82\x80Ta\x01\xD6\x90a\x03\xEFV[\x80\x15a\x02#W\x80`\x1F\x10a\x01\xF8Wa\x01\0\x80\x83T\x04\x02\x83R\x91` \x01\x91a\x02#V[\x82\x01\x91\x90`\0R` `\0 \x90[\x81T\x81R\x90`\x01\x01\x90` \x01\x80\x83\x11a\x02\x06W\x82\x90\x03`\x1F\x16\x82\x01\x91[PPPPP\x81V[`\x02\x80Ta\x01\xAA\x90a\x03\xEFV[cNH{q`\xE0\x1B`\0R`A`\x04R`$`\0\xFD[`\0` \x82\x84\x03\x12\x15a\x02`W`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x02xW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\x02\x8CW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x02\x9EWa\x02\x9Ea\x028V[`@Q`\x1F\x82\x01`\x1F\x19\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\x02\xC6Wa\x02\xC6a\x028V[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\x02\xDFW`\0\x80\xFD[\x82` \x86\x01` \x83\x017`\0\x92\x81\x01` \x01\x92\x90\x92RP\x95\x94PPPPPV[`\0` \x82\x84\x03\x12\x15a\x03\x11W`\0\x80\xFD[\x815`\x01`\x01`\xA0\x1B\x03\x81\x16\x81\x14a\x03(W`\0\x80\xFD[\x93\x92PPPV[`\0` \x80\x83R\x83Q\x80\x82\x85\x01R`\0[\x81\x81\x10\x15a\x03\\W\x85\x81\x01\x83\x01Q\x85\x82\x01`@\x01R\x82\x01a\x03@V[P`\0`@\x82\x86\x01\x01R`@`\x1F\x19`\x1F\x83\x01\x16\x85\x01\x01\x92PPP\x92\x91PPV[`\0\x80` \x83\x85\x03\x12\x15a\x03\x90W`\0\x80\xFD[\x825g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\x03\xA8W`\0\x80\xFD[\x81\x85\x01\x91P\x85`\x1F\x83\x01\x12a\x03\xBCW`\0\x80\xFD[\x815\x81\x81\x11\x15a\x03\xCBW`\0\x80\xFD[\x86` \x82\x85\x01\x01\x11\x15a\x03\xDDW`\0\x80\xFD[` \x92\x90\x92\x01\x96\x91\x95P\x90\x93PPPPV[`\x01\x81\x81\x1C\x90\x82\x16\x80a\x04\x03W`\x7F\x82\x16\x91P[` \x82\x10\x81\x03a\x04#WcNH{q`\xE0\x1B`\0R`\"`\x04R`$`\0\xFD[P\x91\x90PV\xFE\xA2dipfsX\"\x12 \xA4\xFDB\xF5'xn\x7F\x9C^\x08}\xD8)P\x1A\xC4\x8D\x98\x81Q\xD0.\x18\xC8]=r;\xBA\x02\x97dsolcC\0\x08\x14\x003";
     /// The deployed bytecode of the contract.
     pub static MOCKVERIFIER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
         __DEPLOYED_BYTECODE,
@@ -318,15 +318,15 @@ pub mod mock_verifier {
                 .method_hash([16, 165, 66, 121], ())
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `proofMarketPlace` (0x732a9d63) function
-        pub fn proof_market_place(
+        ///Calls the contract's `proofMarketplace` (0x81c45c70) function
+        pub fn proof_marketplace(
             &self,
         ) -> ::ethers::contract::builders::ContractCall<
             M,
             ::ethers::core::types::Address,
         > {
             self.0
-                .method_hash([115, 42, 157, 99], ())
+                .method_hash([129, 196, 92, 112], ())
                 .expect("method not found (this should never happen)")
         }
         ///Calls the contract's `sampleInput` (0x7d8ad42b) function
@@ -351,13 +351,13 @@ pub mod mock_verifier {
                 .method_hash([167, 108, 5, 81], ())
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `setProofMarketPlaceContract` (0xc46fc3ef) function
-        pub fn set_proof_market_place_contract(
+        ///Calls the contract's `setProofMarketplaceContract` (0x056de704) function
+        pub fn set_proof_marketplace_contract(
             &self,
             proof_marketplace: ::ethers::core::types::Address,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([196, 111, 195, 239], proof_marketplace)
+                .method_hash([5, 109, 231, 4], proof_marketplace)
                 .expect("method not found (this should never happen)")
         }
         ///Calls the contract's `verify` (0x8e760afe) function
@@ -409,7 +409,7 @@ pub mod mock_verifier {
     )]
     #[ethcall(name = "checkSampleInputsAndProof", abi = "checkSampleInputsAndProof()")]
     pub struct CheckSampleInputsAndProofCall;
-    ///Container type for all input parameters for the `proofMarketPlace` function with signature `proofMarketPlace()` and selector `0x732a9d63`
+    ///Container type for all input parameters for the `proofMarketplace` function with signature `proofMarketplace()` and selector `0x81c45c70`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
@@ -422,8 +422,8 @@ pub mod mock_verifier {
         Eq,
         Hash
     )]
-    #[ethcall(name = "proofMarketPlace", abi = "proofMarketPlace()")]
-    pub struct ProofMarketPlaceCall;
+    #[ethcall(name = "proofMarketplace", abi = "proofMarketplace()")]
+    pub struct ProofMarketplaceCall;
     ///Container type for all input parameters for the `sampleInput` function with signature `sampleInput()` and selector `0x7d8ad42b`
     #[derive(
         Clone,
@@ -454,7 +454,7 @@ pub mod mock_verifier {
     )]
     #[ethcall(name = "sampleProof", abi = "sampleProof()")]
     pub struct SampleProofCall;
-    ///Container type for all input parameters for the `setProofMarketPlaceContract` function with signature `setProofMarketPlaceContract(address)` and selector `0xc46fc3ef`
+    ///Container type for all input parameters for the `setProofMarketplaceContract` function with signature `setProofMarketplaceContract(address)` and selector `0x056de704`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
@@ -468,10 +468,10 @@ pub mod mock_verifier {
         Hash
     )]
     #[ethcall(
-        name = "setProofMarketPlaceContract",
-        abi = "setProofMarketPlaceContract(address)"
+        name = "setProofMarketplaceContract",
+        abi = "setProofMarketplaceContract(address)"
     )]
-    pub struct SetProofMarketPlaceContractCall {
+    pub struct SetProofMarketplaceContractCall {
         pub proof_marketplace: ::ethers::core::types::Address,
     }
     ///Container type for all input parameters for the `verify` function with signature `verify(bytes)` and selector `0x8e760afe`
@@ -535,10 +535,10 @@ pub mod mock_verifier {
     )]
     pub enum MockVerifierCalls {
         CheckSampleInputsAndProof(CheckSampleInputsAndProofCall),
-        ProofMarketPlace(ProofMarketPlaceCall),
+        ProofMarketplace(ProofMarketplaceCall),
         SampleInput(SampleInputCall),
         SampleProof(SampleProofCall),
-        SetProofMarketPlaceContract(SetProofMarketPlaceContractCall),
+        SetProofMarketplaceContract(SetProofMarketplaceContractCall),
         Verify(VerifyCall),
         VerifyAgainstSampleInputs(VerifyAgainstSampleInputsCall),
         VerifyInputs(VerifyInputsCall),
@@ -553,10 +553,10 @@ pub mod mock_verifier {
             ) {
                 return Ok(Self::CheckSampleInputsAndProof(decoded));
             }
-            if let Ok(decoded) = <ProofMarketPlaceCall as ::ethers::core::abi::AbiDecode>::decode(
+            if let Ok(decoded) = <ProofMarketplaceCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
             ) {
-                return Ok(Self::ProofMarketPlace(decoded));
+                return Ok(Self::ProofMarketplace(decoded));
             }
             if let Ok(decoded) = <SampleInputCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
@@ -568,10 +568,10 @@ pub mod mock_verifier {
             ) {
                 return Ok(Self::SampleProof(decoded));
             }
-            if let Ok(decoded) = <SetProofMarketPlaceContractCall as ::ethers::core::abi::AbiDecode>::decode(
+            if let Ok(decoded) = <SetProofMarketplaceContractCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
             ) {
-                return Ok(Self::SetProofMarketPlaceContract(decoded));
+                return Ok(Self::SetProofMarketplaceContract(decoded));
             }
             if let Ok(decoded) = <VerifyCall as ::ethers::core::abi::AbiDecode>::decode(
                 data,
@@ -597,7 +597,7 @@ pub mod mock_verifier {
                 Self::CheckSampleInputsAndProof(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::ProofMarketPlace(element) => {
+                Self::ProofMarketplace(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
                 Self::SampleInput(element) => {
@@ -606,7 +606,7 @@ pub mod mock_verifier {
                 Self::SampleProof(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::SetProofMarketPlaceContract(element) => {
+                Self::SetProofMarketplaceContract(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
                 Self::Verify(element) => ::ethers::core::abi::AbiEncode::encode(element),
@@ -625,10 +625,10 @@ pub mod mock_verifier {
                 Self::CheckSampleInputsAndProof(element) => {
                     ::core::fmt::Display::fmt(element, f)
                 }
-                Self::ProofMarketPlace(element) => ::core::fmt::Display::fmt(element, f),
+                Self::ProofMarketplace(element) => ::core::fmt::Display::fmt(element, f),
                 Self::SampleInput(element) => ::core::fmt::Display::fmt(element, f),
                 Self::SampleProof(element) => ::core::fmt::Display::fmt(element, f),
-                Self::SetProofMarketPlaceContract(element) => {
+                Self::SetProofMarketplaceContract(element) => {
                     ::core::fmt::Display::fmt(element, f)
                 }
                 Self::Verify(element) => ::core::fmt::Display::fmt(element, f),
@@ -644,9 +644,9 @@ pub mod mock_verifier {
             Self::CheckSampleInputsAndProof(value)
         }
     }
-    impl ::core::convert::From<ProofMarketPlaceCall> for MockVerifierCalls {
-        fn from(value: ProofMarketPlaceCall) -> Self {
-            Self::ProofMarketPlace(value)
+    impl ::core::convert::From<ProofMarketplaceCall> for MockVerifierCalls {
+        fn from(value: ProofMarketplaceCall) -> Self {
+            Self::ProofMarketplace(value)
         }
     }
     impl ::core::convert::From<SampleInputCall> for MockVerifierCalls {
@@ -659,9 +659,9 @@ pub mod mock_verifier {
             Self::SampleProof(value)
         }
     }
-    impl ::core::convert::From<SetProofMarketPlaceContractCall> for MockVerifierCalls {
-        fn from(value: SetProofMarketPlaceContractCall) -> Self {
-            Self::SetProofMarketPlaceContract(value)
+    impl ::core::convert::From<SetProofMarketplaceContractCall> for MockVerifierCalls {
+        fn from(value: SetProofMarketplaceContractCall) -> Self {
+            Self::SetProofMarketplaceContract(value)
         }
     }
     impl ::core::convert::From<VerifyCall> for MockVerifierCalls {
@@ -693,7 +693,7 @@ pub mod mock_verifier {
         Hash
     )]
     pub struct CheckSampleInputsAndProofReturn(pub bool);
-    ///Container type for all return fields from the `proofMarketPlace` function with signature `proofMarketPlace()` and selector `0x732a9d63`
+    ///Container type for all return fields from the `proofMarketplace` function with signature `proofMarketplace()` and selector `0x81c45c70`
     #[derive(
         Clone,
         ::ethers::contract::EthAbiType,
@@ -706,7 +706,7 @@ pub mod mock_verifier {
         Eq,
         Hash
     )]
-    pub struct ProofMarketPlaceReturn(pub ::ethers::core::types::Address);
+    pub struct ProofMarketplaceReturn(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `sampleInput` function with signature `sampleInput()` and selector `0x7d8ad42b`
     #[derive(
         Clone,
