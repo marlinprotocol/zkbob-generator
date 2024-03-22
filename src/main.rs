@@ -1,6 +1,7 @@
 mod handler;
 mod model;
 mod response;
+mod verification;
 mod zkbob_generator;
 
 use actix_web::{App, HttpServer};

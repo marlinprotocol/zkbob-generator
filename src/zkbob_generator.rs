@@ -1,4 +1,5 @@
 use bindings::shared_types::Ask;
+use ethers::signers::{LocalWallet, Signer};
 use libzeropool_zkbob::fawkes_crypto::engines::bn256::Fr;
 use libzeropool_zkbob::{
     circuit::tx::{c_transfer, CTransferPub, CTransferSec},
@@ -11,6 +12,7 @@ use libzeropool_zkbob::{
     POOL_PARAMS,
 };
 use serde::Deserialize;
+use tokio::fs;
 
 use std::str;
 use std::time::Instant;
@@ -20,6 +22,8 @@ use ethers::types::Bytes;
 use ethers::types::U256;
 
 use serde_json::{self, json};
+
+use crate::verification::verify_zkbob_secret;
 
 #[derive(Debug, Deserialize)]
 struct ProofRaw {
@@ -36,8 +40,9 @@ struct Proof {
 }
 
 pub struct GenerateZkbobProof {
-    pub proof: ethers::types::Bytes,
+    pub proof: Option<ethers::types::Bytes>,
     pub verification_status: bool,
+    pub signature: Option<String>,
 }
 
 impl From<ProofRaw> for Proof {
@@ -99,8 +104,39 @@ fn decode_input(
 pub async fn zkbob_generator(
     ask: Ask,
     private_input: Vec<u8>,
+    ask_id: u64,
 ) -> Result<GenerateZkbobProof, Box<dyn std::error::Error>> {
     let public_inputs = ask.prover_data;
+
+    let are_inputs_valid = verify_zkbob_secret(&public_inputs, &private_input).await?;
+
+    if !are_inputs_valid {
+        let read_secp_private_key = fs::read("/app/secp.sec").await?;
+        let secp_private_key = secp256k1::SecretKey::from_slice(&read_secp_private_key)
+            .unwrap()
+            .display_secret()
+            .to_string();
+        let signer_wallet = secp_private_key.parse::<LocalWallet>().unwrap();
+        let value = vec![
+            ethers::abi::Token::Uint(ask_id.into()),
+            ethers::abi::Token::Bytes(public_inputs.to_vec()),
+        ];
+        let encoded = ethers::abi::encode(&value);
+        let digest = ethers::utils::keccak256(encoded);
+
+        let signature = signer_wallet
+            .sign_message(ethers::types::H256(digest))
+            .await
+            .unwrap();
+
+        let output = GenerateZkbobProof {
+            proof: None,
+            verification_status: false,
+            signature: Some("0x".to_owned() + &signature.to_string()),
+        };
+
+        return Ok(output);
+    }
 
     let generate_proof_response = generate_zkbob_proof(
         private_input,
@@ -165,8 +201,9 @@ fn generate_zkbob_proof(
     let encoded_data = encode(&[tokens]);
 
     let output = GenerateZkbobProof {
-        proof: encoded_data.into(),
+        proof: Some(encoded_data.into()),
         verification_status: res,
+        signature: None,
     };
 
     Ok(output)
