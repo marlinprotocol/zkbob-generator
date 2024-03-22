@@ -35,6 +35,11 @@ struct Proof {
     c: [U256; 2],
 }
 
+pub struct GenerateZkbobProof {
+    pub proof: ethers::types::Bytes,
+    pub verification_status: bool,
+}
+
 impl From<ProofRaw> for Proof {
     fn from(raw: ProofRaw) -> Self {
         Self {
@@ -94,13 +99,18 @@ fn decode_input(
 pub async fn zkbob_generator(
     ask: Ask,
     private_input: Vec<u8>,
-) -> Result<Bytes, Box<dyn std::error::Error>> {
+) -> Result<GenerateZkbobProof, Box<dyn std::error::Error>> {
     let public_inputs = ask.prover_data;
 
-    let proof = generate_zkbob_proof(private_input, public_inputs, "./params/transfer_params_prod.bin").unwrap();
-    log::info!("proof: {:?}", proof);
+    let generate_proof_response = generate_zkbob_proof(
+        private_input,
+        public_inputs,
+        "./params/transfer_params_prod.bin",
+    )
+    .unwrap();
+    log::info!("proof: {:?}", generate_proof_response.proof);
 
-    Ok(proof)
+    Ok(generate_proof_response)
 }
 
 fn circuit<C: CS<Fr = Fr>>(public: CTransferPub<C>, secret: CTransferSec<C>) {
@@ -111,7 +121,7 @@ fn generate_zkbob_proof(
     secret_bytes: Vec<u8>,
     public_inputs_bytes: ethers::types::Bytes,
     transfer_params_path: &str,
-) -> Result<ethers::types::Bytes, Box<dyn std::error::Error>> {
+) -> Result<GenerateZkbobProof, Box<dyn std::error::Error>> {
     let params = param_gen(transfer_params_path);
     log::info!("Proof generation started...");
     let ts_prove = Instant::now();
@@ -154,5 +164,10 @@ fn generate_zkbob_proof(
 
     let encoded_data = encode(&[tokens]);
 
-    Ok(encoded_data.into())
+    let output = GenerateZkbobProof {
+        proof: encoded_data.into(),
+        verification_status: res,
+    };
+
+    Ok(output)
 }

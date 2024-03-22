@@ -4,5 +4,5 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Debug, Deserialize)]
 pub struct GenerateProofInputs {
     pub ask: Ask,
-    pub private_input: Vec<u8>
+    pub private_input: Vec<u8>,
 }

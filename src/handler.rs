@@ -14,11 +14,8 @@ async fn test() -> impl Responder {
 #[post("/generateProof")]
 async fn generate_proof(jsonbody: web::Json<GenerateProofInputs>) -> impl Responder {
     let zkbob_inputs = jsonbody.0;
-    let generate_zkbob_proof = zkbob_generator::zkbob_generator(
-        zkbob_inputs.ask,
-        zkbob_inputs.private_input
-    )
-    .await;
+    let generate_zkbob_proof =
+        zkbob_generator::zkbob_generator(zkbob_inputs.ask, zkbob_inputs.private_input).await;
 
     if generate_zkbob_proof.is_err() {
         return response(
@@ -28,12 +25,20 @@ async fn generate_proof(jsonbody: web::Json<GenerateProofInputs>) -> impl Respon
         );
     }
 
-    let zkbob_proof = generate_zkbob_proof.unwrap();
+    let zkbob_proof_response = generate_zkbob_proof.unwrap();
+
+    if zkbob_proof_response.verification_status == false {
+        return response(
+            "There was an issue while generating the proof, please check for invalid inputs!",
+            StatusCode::INTERNAL_SERVER_ERROR,
+            None,
+        );
+    }
 
     response(
         "Proof generated",
         StatusCode::OK,
-        Some(Value::String(zkbob_proof.to_string())),
+        Some(Value::String(zkbob_proof_response.proof.to_string())),
     )
 }
 
