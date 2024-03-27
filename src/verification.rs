@@ -75,8 +75,8 @@ pub async fn verify_zkbob_secret(
     let mut result = false;
     let pub_input = hex::encode(public_input);
     let sec_input = hex::encode(private_inputs);
-    let zkbob_public = into_zkbob_pub_input(pub_input[2..].to_string()).unwrap();
-    let zkbob_secret = into_zkbob_secret(sec_input[2..].to_string()).unwrap();
+    let zkbob_public = into_zkbob_pub_input(pub_input.to_string()).unwrap();
+    let zkbob_secret = into_zkbob_secret(sec_input.to_string()).unwrap();
 
     // calculating output hashes
     let out_account_hash = zkbob_secret.tx.output.0.hash(&POOL_PARAMS.clone());
