@@ -6,6 +6,7 @@ mod zkbob_generator;
 
 use actix_web::{App, HttpServer};
 use dotenv::dotenv;
+use std::time::Duration;
 
 use std::env;
 
@@ -20,6 +21,7 @@ async fn main() -> std::io::Result<()> {
         .expect("PORT must be a valid number");
 
     let server = HttpServer::new(move || App::new().configure(handler::routes))
+        .client_request_timeout(Duration::new(0, 0))
         .bind(("0.0.0.0", port))
         .unwrap_or_else(|_| panic!("Can not bind to {}", &port))
         .run();
