@@ -45,6 +45,10 @@ pub struct GenerateZkbobProof {
     pub signature: Option<String>,
 }
 
+pub struct BenchmarkProofGenerationResponse {
+    pub proof_generation_time: u128,
+}
+
 impl From<ProofRaw> for Proof {
     fn from(raw: ProofRaw) -> Self {
         Self {
@@ -153,6 +157,7 @@ fn circuit<C: CS<Fr = Fr>>(public: CTransferPub<C>, secret: CTransferSec<C>) {
     c_transfer(&public, &secret, &*POOL_PARAMS);
 }
 
+//Generate Proof
 fn generate_zkbob_proof(
     secret_bytes: Vec<u8>,
     public_inputs_bytes: ethers::types::Bytes,
@@ -204,6 +209,41 @@ fn generate_zkbob_proof(
         proof: Some(encoded_data.into()),
         verification_status: res,
         signature: None,
+    };
+
+    Ok(output)
+}
+
+pub fn benchmark_proof_generation(
+    secret_bytes: Vec<u8>,
+    public_inputs_bytes: ethers::types::Bytes,
+) -> Result<BenchmarkProofGenerationResponse, Box<dyn std::error::Error>> {
+    let params = param_gen("./params/transfer_params_prod.bin");
+    log::info!("Proof generation started...");
+    let ts_prove = Instant::now();
+
+    let secret = String::from_utf8(secret_bytes).unwrap();
+    let secret: TransferSec<Fr> = serde_json::from_str(&secret).unwrap();
+    let public = decode_input(public_inputs_bytes).unwrap();
+
+    let data = json!({
+        "root": public[0].to_string(),
+        "nullifier": public[1].to_string(),
+        "out_commit": public[2].to_string(),
+        "delta": public[3].to_string(),
+        "memo": public[4].to_string()
+    });
+
+    let public: TransferPub<Fr> = serde_json::from_value(data).unwrap();
+    let (inputs, snark_proof) = prover::prove(&params, &public, &secret, circuit);
+
+    let duration = ts_prove.elapsed();
+    log::info!("Proof generation time: {:?}ms", duration.as_millis());
+    let res = verifier::verify(&params.get_vk(), &snark_proof, &inputs);
+    log::info!("Proof verification status : {:?}", res);
+
+    let output = BenchmarkProofGenerationResponse {
+        proof_generation_time: duration.as_millis(),
     };
 
     Ok(output)
