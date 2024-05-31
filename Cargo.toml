@@ -20,3 +20,8 @@ hex = "0.4"
 secp256k1 = "0.28.0"
 libzeropool-zkbob="1.3.0"
 ethers ={version = "2.0.10", features = ["abigen", "ws", "rustls"] }
+
+
+[[bin]]
+name = "ivs"
+path = "tools/ivs.rs"
