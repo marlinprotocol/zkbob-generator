@@ -105,6 +105,34 @@ fn decode_input(
     }
 }
 
+pub async fn invalid_input_response(ask_id: u64, public_inputs: Bytes) -> GenerateZkbobProof {
+    let read_secp_private_key = fs::read("/app/secp.sec").await.unwrap();
+    let secp_private_key = secp256k1::SecretKey::from_slice(&read_secp_private_key)
+        .unwrap()
+        .display_secret()
+        .to_string();
+    let signer_wallet = secp_private_key.parse::<LocalWallet>().unwrap();
+    let value = vec![
+        ethers::abi::Token::Uint(ask_id.into()),
+        ethers::abi::Token::Bytes(public_inputs.to_vec()),
+    ];
+    let encoded = ethers::abi::encode(&value);
+    let digest = ethers::utils::keccak256(encoded);
+
+    let signature = signer_wallet
+        .sign_message(ethers::types::H256(digest))
+        .await
+        .unwrap();
+
+    let output = GenerateZkbobProof {
+        proof: None,
+        verification_status: false,
+        signature: Some("0x".to_owned() + &signature.to_string()),
+    };
+
+    return output;
+}
+
 pub async fn zkbob_generator(
     ask: Ask,
     private_input: Vec<u8>,
@@ -112,34 +140,15 @@ pub async fn zkbob_generator(
 ) -> Result<GenerateZkbobProof, Box<dyn std::error::Error>> {
     let public_inputs = ask.prover_data;
 
-    let are_inputs_valid = verify_zkbob_secret(&public_inputs, &private_input).await?;
+    let are_inputs_valid = verify_zkbob_secret(&public_inputs, &private_input).await;
+    if are_inputs_valid.is_err() {
+        return Ok(invalid_input_response(ask_id.clone(), public_inputs.clone()).await);
+    }
+
+    let are_inputs_valid = are_inputs_valid.unwrap();
 
     if !are_inputs_valid {
-        let read_secp_private_key = fs::read("/app/secp.sec").await?;
-        let secp_private_key = secp256k1::SecretKey::from_slice(&read_secp_private_key)
-            .unwrap()
-            .display_secret()
-            .to_string();
-        let signer_wallet = secp_private_key.parse::<LocalWallet>().unwrap();
-        let value = vec![
-            ethers::abi::Token::Uint(ask_id.into()),
-            ethers::abi::Token::Bytes(public_inputs.to_vec()),
-        ];
-        let encoded = ethers::abi::encode(&value);
-        let digest = ethers::utils::keccak256(encoded);
-
-        let signature = signer_wallet
-            .sign_message(ethers::types::H256(digest))
-            .await
-            .unwrap();
-
-        let output = GenerateZkbobProof {
-            proof: None,
-            verification_status: false,
-            signature: Some("0x".to_owned() + &signature.to_string()),
-        };
-
-        return Ok(output);
+        return Ok(invalid_input_response(ask_id.clone(), public_inputs.clone()).await);
     }
 
     let generate_proof_response = generate_zkbob_proof(
