@@ -37,17 +37,16 @@ async fn test() -> impl Responder {
     zkbob_generator::response::response("The zkbob ivs is running!!", StatusCode::OK, None)
 }
 
-// The payload for the POST request
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct InputPayload {
     pub public: String,
-    pub private: String,
+    pub secrets: Option<String>,
 }
 
-#[post("/checkInput")]
+#[post("/checkInputs")]
 async fn check_input_handler(payload: web::Json<InputPayload>) -> impl Responder {
     let public_inputs = hex::decode(payload.clone().public).unwrap().into();
-    let private_inputs = hex::decode(payload.clone().private).unwrap();
+    let private_inputs = hex::decode(payload.clone().secrets.unwrap()).unwrap();
 
     let result =
         zkbob_generator::verification::verify_zkbob_secret(&public_inputs, &private_inputs).await;
@@ -69,4 +68,29 @@ async fn check_input_handler(payload: web::Json<InputPayload>) -> impl Responder
             None,
         );
     }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct EncryptedInputPayload {
+    pub public: String,
+    pub encrypted_secrets: String,
+}
+#[post("/checkEncryptedInputs")]
+async fn check_encrypted_input_handler(
+    payload: web::Json<EncryptedInputPayload>,
+) -> impl Responder {
+    #[derive(Deserialize)]
+    pub struct DecryptRequest {
+        market_id: String,
+        private_input: String,
+        acl: String,
+        signature: String,
+        ivs_pubkey: String,
+    }
+    // send request to matching engine `/decryptRequest from here`
+    return zkbob_generator::response::response(
+        "not implemented",
+        StatusCode::NOT_IMPLEMENTED,
+        None,
+    );
 }
