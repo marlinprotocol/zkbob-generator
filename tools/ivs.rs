@@ -1,6 +1,8 @@
 use actix_web::http::StatusCode;
 use actix_web::{get, post, web, Responder};
 use actix_web::{App, HttpResponse, HttpServer};
+use secp256k1::{PublicKey, Secp256k1, SecretKey};
+use secret_inputs_helpers::try_decrypt;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
 
@@ -8,12 +10,17 @@ use ethers::core::k256::ecdsa::{SigningKey, VerifyingKey};
 use ethers::core::rand::thread_rng;
 use ethers::core::utils::hex::FromHex;
 use ethers::signers::{LocalWallet, Signer};
-use ethers::types::{Signature, SignatureError, H160};
+use ethers::types::{Bytes, Signature, SignatureError, H160, U256};
 use ethers::utils::keccak256;
 use hex::decode;
 use hex::encode;
 use reqwest::Client;
 use std::error::Error;
+use std::fs::File;
+use std::io::{self, Read};
+use std::str::FromStr;
+
+mod secret_inputs_helpers;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -101,7 +108,7 @@ async fn check_encrypted_input_handler(
 
     let market_id = "1";
     let signature = sign_message_hash(market_id.to_string());
-    let ivs_pubkey = "04dea308a0d2b8f80f2304818df0eaea9da11d082e58c5018e04d37662b7db2b051d9475505986ed42d099cecbe6f5e5d824ee272d979fae9803190340420dd399";
+    let ivs_pubkey = read_private_key_and_generate_public();
 
     let decrypt_request = DecryptRequest {
         market_id: market_id.to_string(),
@@ -118,21 +125,62 @@ async fn check_encrypted_input_handler(
     let url = "http://localhost:3000/decryptRequest";
     // send request to matching engine `/decryptRequest from here`
 
-    let response = client.post(url).json(&decrypt_request).send().await;
+    let response: Result<reqwest::Response, reqwest::Error> =
+        client.post(url).json(&decrypt_request).send().await;
+    let mut body: String;
 
-    if response.is_err() {
+    match response {
+        Ok(res) => {
+            body = res.text().await.unwrap();
+            println!("Response body: {}", body);
+        }
+        Err(e) => {
+            eprintln!("Request failed: {}", e);
+            return Ok(zkbob_generator::response::response(
+                "Request failed",
+                StatusCode::BAD_REQUEST,
+                None,
+            ));
+        }
+    }
+
+    let mut file = File::open("./app.secp").expect("file not found");
+    let mut private_key_hex = String::new();
+    file.read_to_string(&mut private_key_hex);
+
+    // Step 2: Convert the hexadecimal private key to bytes
+    let private_key_bytes = hex::decode(private_key_hex.trim()).expect("Invalid hex string");
+    let market_id_U256 = U256::from_str(market_id).unwrap();
+    let market_id_bytes = hex::decode(market_id.trim()).expect("Invalid hex string");
+    let encrypted_data = body;
+    let encrypted_data_bytes = hex::decode(encrypted_data.trim()).expect("Invalid hex string");
+
+    let decrypted = try_decrypt(&encrypted_data_bytes, &private_key_bytes, market_id_U256).unwrap();
+    let bytes: Bytes = Bytes::from(market_id_bytes);
+
+    let result = zkbob_generator::verification::verify_zkbob_secret(&bytes, &decrypted).await;
+    if result.is_err() {
         return Ok(zkbob_generator::response::response(
-            "Bad Request",
+            "invalid inputs!!",
             StatusCode::BAD_REQUEST,
             None,
         ));
     }
 
-    return Ok(zkbob_generator::response::response(
-        "Valid Inputs",
-        StatusCode::OK,
-        None,
-    ));
+    let result = result.unwrap();
+    if result {
+        return Ok(zkbob_generator::response::response(
+            "valid inputs.",
+            StatusCode::OK,
+            None,
+        ));
+    } else {
+        return Ok(zkbob_generator::response::response(
+            "invalid inputs!!",
+            StatusCode::BAD_REQUEST,
+            None,
+        ));
+    }
 }
 
 pub fn generate_key() {
@@ -152,14 +200,34 @@ pub fn generate_key() {
     println!("Public Key: 0x{}", encode(public_key_bytes));
 }
 
+pub fn read_private_key_and_generate_public() -> String {
+    // Step 1: Read the private key from the file
+    let mut file = File::open("./app.secp").expect("file not found");
+    let mut private_key_hex = String::new();
+    file.read_to_string(&mut private_key_hex);
+
+    // Step 2: Convert the hexadecimal private key to bytes
+    let private_key_bytes = hex::decode(private_key_hex.trim()).expect("Invalid hex string");
+
+    // Step 3: Generate the public key using secp256k1
+    let secp = Secp256k1::new();
+    let sk = SecretKey::from_slice(&private_key_bytes).expect("32 bytes, within curve order");
+    let pk = PublicKey::from_secret_key(&secp, &sk);
+
+    // Convert the public key to uncompressed and compressed formats
+    let uncompressed_public_key = hex::encode(pk.serialize_uncompressed());
+    uncompressed_public_key
+}
+
 pub fn sign_message_hash(market_id: String) -> String {
     // Generate a random wallet (private key)
-    let private_key_hex = "890d9d749c8cec9babae73e6056ce54e9e96d0f3fc88afa93546a41813ba5ce0";
+    let mut file = File::open("./app.secp").expect("file not found");
+    let mut private_key_hex = String::new();
+    file.read_to_string(&mut private_key_hex);
 
     // Initialize the wallet from the private key
     let wallet: LocalWallet = private_key_hex.parse().expect("Invalid private key");
 
-    let ivs_pubkey = "04dea308a0d2b8f80f2304818df0eaea9da11d082e58c5018e04d37662b7db2b051d9475505986ed42d099cecbe6f5e5d824ee272d979fae9803190340420dd399";
     // Example message
     let message = market_id;
 
