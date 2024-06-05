@@ -162,6 +162,7 @@ pub fn encrypt_data_with_ecies_and_aes(
     })
 }
 
+#[allow(unused)]
 pub fn decrypt_data_with_ecies_and_aes(
     encrypted_data: &[u8],
     acl_data: &[u8],

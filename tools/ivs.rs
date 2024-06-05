@@ -8,16 +8,13 @@ use std::time::Duration;
 
 use ethers::core::k256::ecdsa::{SigningKey, VerifyingKey};
 use ethers::core::rand::thread_rng;
-use ethers::core::utils::hex::FromHex;
-use ethers::signers::{LocalWallet, Signer};
-use ethers::types::{Bytes, Signature, SignatureError, H160, U256};
+use ethers::signers::LocalWallet;
+use ethers::types::{Bytes, Signature, U256};
 use ethers::utils::keccak256;
-use hex::decode;
 use hex::encode;
 use reqwest::Client;
-use std::error::Error;
 use std::fs::File;
-use std::io::{self, Read};
+use std::io::Read;
 use std::str::FromStr;
 
 mod secret_inputs_helpers;
@@ -92,6 +89,8 @@ async fn check_input_handler(payload: web::Json<InputPayload>) -> impl Responder
 pub struct EncryptedInputPayload {
     pub public: String,
     pub encrypted_secrets: String,
+    pub me_decryption_url: String,
+    pub market_id: String,
 }
 #[post("/checkEncryptedInputs")]
 async fn check_encrypted_input_handler(
@@ -106,7 +105,7 @@ async fn check_encrypted_input_handler(
         ivs_pubkey: String,
     }
 
-    let market_id = "1";
+    let market_id: &str = payload.market_id.as_ref();
     let signature = sign_message_hash(market_id.to_string());
     let ivs_pubkey = read_private_key_and_generate_public();
 
@@ -122,12 +121,13 @@ async fn check_encrypted_input_handler(
     let client = Client::new();
 
     // Define the URL for the request
-    let url = "http://localhost:3000/decryptRequest";
+    // let url = "http://localhost:3000/decryptRequest";
     // send request to matching engine `/decryptRequest from here`
+    let url: &str = payload.me_decryption_url.as_ref();
 
     let response: Result<reqwest::Response, reqwest::Error> =
         client.post(url).json(&decrypt_request).send().await;
-    let mut body: String;
+    let body: String;
 
     match response {
         Ok(res) => {
@@ -146,16 +146,16 @@ async fn check_encrypted_input_handler(
 
     let mut file = File::open("./app.secp").expect("file not found");
     let mut private_key_hex = String::new();
-    file.read_to_string(&mut private_key_hex);
+    let _ = file.read_to_string(&mut private_key_hex);
 
     // Step 2: Convert the hexadecimal private key to bytes
     let private_key_bytes = hex::decode(private_key_hex.trim()).expect("Invalid hex string");
-    let market_id_U256 = U256::from_str(market_id).unwrap();
+    let market_id_u256 = U256::from_str(market_id).unwrap();
     let market_id_bytes = hex::decode(market_id.trim()).expect("Invalid hex string");
     let encrypted_data = body;
     let encrypted_data_bytes = hex::decode(encrypted_data.trim()).expect("Invalid hex string");
 
-    let decrypted = try_decrypt(&encrypted_data_bytes, &private_key_bytes, market_id_U256).unwrap();
+    let decrypted = try_decrypt(&encrypted_data_bytes, &private_key_bytes, market_id_u256).unwrap();
     let bytes: Bytes = Bytes::from(market_id_bytes);
 
     let result = zkbob_generator::verification::verify_zkbob_secret(&bytes, &decrypted).await;
@@ -204,7 +204,7 @@ pub fn read_private_key_and_generate_public() -> String {
     // Step 1: Read the private key from the file
     let mut file = File::open("./app.secp").expect("file not found");
     let mut private_key_hex = String::new();
-    file.read_to_string(&mut private_key_hex);
+    let _ = file.read_to_string(&mut private_key_hex);
 
     // Step 2: Convert the hexadecimal private key to bytes
     let private_key_bytes = hex::decode(private_key_hex.trim()).expect("Invalid hex string");
@@ -223,7 +223,7 @@ pub fn sign_message_hash(market_id: String) -> String {
     // Generate a random wallet (private key)
     let mut file = File::open("./app.secp").expect("file not found");
     let mut private_key_hex = String::new();
-    file.read_to_string(&mut private_key_hex);
+    let _ = file.read_to_string(&mut private_key_hex);
 
     // Initialize the wallet from the private key
     let wallet: LocalWallet = private_key_hex.parse().expect("Invalid private key");
