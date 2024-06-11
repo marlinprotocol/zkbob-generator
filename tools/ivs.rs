@@ -2,7 +2,7 @@ use actix_web::http::StatusCode;
 use actix_web::{get, post, web, Responder};
 use actix_web::{App, HttpResponse, HttpServer};
 use secp256k1::{PublicKey, Secp256k1, SecretKey};
-use secret_inputs_helpers::try_decrypt;
+use secret_inputs_helpers::decrypt_ecies;
 use serde::{Deserialize, Serialize};
 use std::time::Duration;
 
@@ -24,7 +24,7 @@ async fn main() -> std::io::Result<()> {
     println!("Ivs pending");
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
-    let port: u16 = 3030;
+    let port: u16 = 3040;
 
     let server = HttpServer::new(move || App::new().configure(routes))
         .client_request_timeout(Duration::new(0, 0))
@@ -42,7 +42,8 @@ async fn main() -> std::io::Result<()> {
 pub fn routes(conf: &mut web::ServiceConfig) {
     let scope = web::scope("/api")
         .service(test)
-        .service(check_input_handler);
+        .service(check_input_handler)
+        .service(check_encrypted_input_handler);
     conf.service(scope);
 }
 
@@ -87,15 +88,16 @@ async fn check_input_handler(payload: web::Json<InputPayload>) -> impl Responder
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct EncryptedInputPayload {
-    pub public: String,
+    pub acl: String,
     pub encrypted_secrets: String,
     pub me_decryption_url: String,
     pub market_id: String,
 }
+
 #[post("/checkEncryptedInputs")]
 async fn check_encrypted_input_handler(
     payload: web::Json<EncryptedInputPayload>,
-) -> actix_web::Result<HttpResponse> {
+) -> impl Responder {
     #[derive(Debug, Serialize, Deserialize)]
     pub struct DecryptRequest {
         market_id: String,
@@ -105,16 +107,23 @@ async fn check_encrypted_input_handler(
         ivs_pubkey: String,
     }
 
+    #[derive(Debug, Deserialize)]
+    struct GetRequestResponse {
+        encrpyted_data: String,
+    }
+
     let market_id: &str = payload.market_id.as_ref();
     let signature = sign_message_hash(market_id.to_string());
     let ivs_pubkey = read_private_key_and_generate_public();
+    let public_key_bytes = hex::decode(ivs_pubkey.trim()).expect("Invalid hex string");
+    let ivs_pubkey_string = hex::encode(&public_key_bytes);
 
     let decrypt_request = DecryptRequest {
         market_id: market_id.to_string(),
         private_input: payload.clone().encrypted_secrets,
-        acl: payload.clone().public,
-        signature: signature,
-        ivs_pubkey: ivs_pubkey.to_string(),
+        acl: payload.clone().acl,
+        signature,
+        ivs_pubkey: ivs_pubkey_string,
     };
 
     // Create a reqwest Client
@@ -127,22 +136,55 @@ async fn check_encrypted_input_handler(
 
     let response: Result<reqwest::Response, reqwest::Error> =
         client.post(url).json(&decrypt_request).send().await;
-    let body: String;
-
+    
     match response {
-        Ok(res) => {
-            body = res.text().await.unwrap();
-            println!("Response body: {}", body);
+        Ok(ref resp) => {
+            match resp.status() {
+                reqwest::StatusCode::OK => {
+                    // Handle the success case
+                    println!("Request was successful");
+                }
+                reqwest::StatusCode::BAD_REQUEST => {
+                    // Handle the bad request case
+                    return zkbob_generator::response::response(
+                        "Request failed",
+                        StatusCode::BAD_REQUEST,
+                        None,
+                    );
+                }
+                reqwest::StatusCode::UNAUTHORIZED => {
+                    // Handle the unauthorized case
+                    return zkbob_generator::response::response(
+                        "Request failed",
+                        StatusCode::UNAUTHORIZED,
+                        None,
+                    );
+                }
+                reqwest::StatusCode::NOT_FOUND => {
+                    // Handle the not found case
+                    return zkbob_generator::response::response(
+                        "Request failed",
+                        StatusCode::NOT_FOUND,
+                        None,
+                    );
+                }
+                status => {
+                    // Handle other status codes
+                    println!("Received response with status code: {}", status);
+                }
+            }
         }
         Err(e) => {
             eprintln!("Request failed: {}", e);
-            return Ok(zkbob_generator::response::response(
+            return zkbob_generator::response::response(
                 "Request failed",
                 StatusCode::BAD_REQUEST,
                 None,
-            ));
+            );
         }
     }
+
+    let response_body: GetRequestResponse = response.unwrap().json().await.expect("Failed to deserialize response body");
 
     let mut file = File::open("./app.secp").expect("file not found");
     let mut private_key_hex = String::new();
@@ -150,36 +192,34 @@ async fn check_encrypted_input_handler(
 
     // Step 2: Convert the hexadecimal private key to bytes
     let private_key_bytes = hex::decode(private_key_hex.trim()).expect("Invalid hex string");
-    let market_id_u256 = U256::from_str(market_id).unwrap();
-    let market_id_bytes = hex::decode(market_id.trim()).expect("Invalid hex string");
-    let encrypted_data = body;
-    let encrypted_data_bytes = hex::decode(encrypted_data.trim()).expect("Invalid hex string");
+    let encrypted_data = response_body.encrpyted_data;
+    let encrypted_data_bytes: Vec<u8> = serde_json::from_str(&encrypted_data).unwrap();
 
-    let decrypted = try_decrypt(&encrypted_data_bytes, &private_key_bytes, market_id_u256).unwrap();
-    let bytes: Bytes = Bytes::from(market_id_bytes);
+    let decrypted = decrypt_ecies( &private_key_bytes, &encrypted_data_bytes).unwrap();
+    let bytes: Bytes = Bytes::from(decrypted.clone());
 
     let result = zkbob_generator::verification::verify_zkbob_secret(&bytes, &decrypted).await;
     if result.is_err() {
-        return Ok(zkbob_generator::response::response(
+        return zkbob_generator::response::response(
             "invalid inputs!!",
             StatusCode::BAD_REQUEST,
             None,
-        ));
+        );
     }
 
     let result = result.unwrap();
     if result {
-        return Ok(zkbob_generator::response::response(
+        return zkbob_generator::response::response(
             "valid inputs.",
             StatusCode::OK,
             None,
-        ));
+        );
     } else {
-        return Ok(zkbob_generator::response::response(
+        return zkbob_generator::response::response(
             "invalid inputs!!",
             StatusCode::BAD_REQUEST,
             None,
-        ));
+        );
     }
 }
 
@@ -250,4 +290,45 @@ pub fn signature_to_str(signature: Signature) -> String {
 
     let signature_hex = format!("{}{}{}", hex::encode(r_hex), hex::encode(s_hex), v_hex);
     signature_hex
+}
+
+
+#[cfg(test)]
+mod tests {
+
+    use ethers::types::U256;
+    use openssl::base64;
+    
+    use crate::secret_inputs_helpers::{self, decrypt_data_with_ecies_and_aes, encrypt_data_with_ecies_and_aes, SecretData};
+    use std::{fs::File, io::Read};
+    
+    use super::read_private_key_and_generate_public;
+    #[tokio::test]
+    async fn key_generation(){
+        let public_key = read_private_key_and_generate_public();
+        let data = "some_data".to_string();
+        let public_key_bytes = hex::decode(public_key.trim()).expect("Invalid hex string");
+        let secret_data: SecretData = encrypt_data_with_ecies_and_aes(&public_key_bytes, &data.clone().into_bytes()).unwrap();
+            // Access the fields using dot notation
+        println!("data {:?}",&data.clone().into_bytes());
+        println!("Encrypted data: {:?}", hex::encode(&secret_data.encrypted_data));
+        println!("ACL data: {:?}", hex::encode(&secret_data.acl_data));
+        println!("len{:?}", public_key_bytes);
+        let str1 = hex::encode(&secret_data.encrypted_data);
+        let str2 = hex::encode(&secret_data.acl_data);
+        
+        let mut file = File::open("./app.secp").expect("file not found");
+        let mut private_key_hex = String::new();
+        let _ = file.read_to_string(&mut private_key_hex);
+        let market_id_u256: U256 = U256::from_dec_str(&"1").expect("Failed to parse string");
+        // Step 2: Convert the hexadecimal private key to bytes
+        let private_key_bytes = hex::decode(private_key_hex.trim()).expect("Invalid hex string");
+        let decrypted_data = decrypt_data_with_ecies_and_aes(&hex::decode(str1).expect(""),&hex::decode(str2).expect(""), &private_key_bytes,market_id_u256).unwrap();
+        println!("ACL data: {:?}", String::from_utf8_lossy(&decrypted_data));
+
+        let encrypted_ecies_data =
+        secret_inputs_helpers::encrypt_ecies(&data.into_bytes(),&public_key_bytes)
+            .unwrap();
+        println!("ACL data: {:?}", String::from_utf8_lossy(&decrypted_data));
+    }
 }
