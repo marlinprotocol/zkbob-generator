@@ -7,11 +7,12 @@ edition = "2021"
 
 [dependencies]
 serde_json="1.0"
-bindings = { path = "./bindings", package = "foundry-contracts" }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.16.1", features = ["full"] }
 actix-web = "4.3.0"
 dotenv = "0.15.0"
+derive_more = "0.99.17"
+reqwest = { version = "0.12.5", features = ["json"]}
 validator = { version = "0.16", features = ["derive"] }
 openssl = { version = "0.10", features = ["vendored"] }
 env_logger = "0.10"
@@ -20,8 +21,24 @@ hex = "0.4"
 secp256k1 = "0.28.0"
 libzeropool-zkbob="1.3.0"
 ethers ={version = "2.0.10", features = ["abigen", "ws", "rustls"] }
+anyhow = "1.0.86"
 
+kalypso_helper = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "helper" }
+kalypso_ivs_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "ivs" }
+kalypso_generator_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "generator" }
+bindings = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "foundry-contracts" }
+kalypso_matching_engine_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "matching_engine" }
+kalypso_listener = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "listener" }
 
-[[bin]]
-name = "ivs"
-path = "tools/ivs.rs"
+# kalypso_helper = { path = "../kalypso-unified/helper", package = "helper" }
+# kalypso_ivs_models = { path = "../kalypso-unified/ivs", package = "ivs" }
+# kalypso_generator_models = { path = "../kalypso-unified/generator", package = "generator" }
+# bindings = { path = "../kalypso-unified/bindings", package = "foundry-contracts" }
+# kalypso_matching_engine_models = { path = "../kalypso-unified/matching_engine", package = "matching_engine" }
+# kalypso_listener = { path = "../kalypso-unified/listener", package = "listener" }
+
+[dev-dependencies]
+actix-rt = "2"
+actix-web = "4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

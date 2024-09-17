@@ -1,4 +1,4 @@
-use bindings::shared_types::Ask;
+// use bindings::shared_types::Ask;
 use ethers::signers::{LocalWallet, Signer};
 use libzeropool_zkbob::fawkes_crypto::engines::bn256::Fr;
 use libzeropool_zkbob::{
@@ -12,7 +12,7 @@ use libzeropool_zkbob::{
     POOL_PARAMS,
 };
 use serde::Deserialize;
-use tokio::fs;
+// use tokio::fs;
 
 use std::str;
 use std::time::Instant;
@@ -40,12 +40,14 @@ struct Proof {
 }
 
 pub struct GenerateZkbobProof {
+    pub inputs: Option<ethers::types::Bytes>,
     pub proof: Option<ethers::types::Bytes>,
+    #[allow(unused)]
     pub verification_status: bool,
     pub signature: Option<String>,
 }
 
-pub struct BenchmarkProofGenerationResponse {
+pub struct BenchmarkResponse {
     pub proof_generation_time: u128,
 }
 
@@ -81,7 +83,7 @@ fn param_gen(transfer_params_path: &str) -> Parameters<Bn256> {
     params
 }
 
-fn decode_input(
+pub fn decode_input(
     encoded_input: Bytes,
 ) -> Result<[ethers::types::U256; 5], Box<dyn std::error::Error>> {
     let param_types = vec![ParamType::FixedArray(Box::new(ParamType::Uint(256)), 5)];
@@ -105,17 +107,16 @@ fn decode_input(
     }
 }
 
-pub async fn invalid_input_response(ask_id: u64, public_inputs: Bytes) -> GenerateZkbobProof {
-    let read_secp_private_key = fs::read("/app/secp.sec").await.unwrap();
-    let secp_private_key = secp256k1::SecretKey::from_slice(&read_secp_private_key)
+pub async fn invalid_input_response(
+    public_inputs: Bytes,
+    enclave_private_key: Vec<u8>,
+) -> GenerateZkbobProof {
+    let secp_private_key = secp256k1::SecretKey::from_slice(&enclave_private_key)
         .unwrap()
         .display_secret()
         .to_string();
     let signer_wallet = secp_private_key.parse::<LocalWallet>().unwrap();
-    let value = vec![
-        ethers::abi::Token::Uint(ask_id.into()),
-        ethers::abi::Token::Bytes(public_inputs.to_vec()),
-    ];
+    let value = vec![ethers::abi::Token::Bytes(public_inputs.clone().to_vec())];
     let encoded = ethers::abi::encode(&value);
     let digest = ethers::utils::keccak256(encoded);
 
@@ -125,6 +126,7 @@ pub async fn invalid_input_response(ask_id: u64, public_inputs: Bytes) -> Genera
         .unwrap();
 
     let output = GenerateZkbobProof {
+        inputs: Some(public_inputs.clone()),
         proof: None,
         verification_status: false,
         signature: Some("0x".to_owned() + &signature.to_string()),
@@ -134,28 +136,41 @@ pub async fn invalid_input_response(ask_id: u64, public_inputs: Bytes) -> Genera
 }
 
 pub async fn zkbob_generator(
-    ask: Ask,
-    private_input: Vec<u8>,
-    ask_id: u64,
+    payload: kalypso_generator_models::models::InputPayload,
+    enclave_private_key: Vec<u8>,
 ) -> Result<GenerateZkbobProof, Box<dyn std::error::Error>> {
-    let public_inputs = ask.prover_data;
+    let public_inputs = payload.get_public();
+    let private_inputs = payload.get_plain_secrets().unwrap();
 
-    let are_inputs_valid = verify_zkbob_secret(&public_inputs, &private_input).await;
+    // let public_input_str = std::str::from_utf8(&public_inputs).unwrap();
+    let public_input_bytes = ethers::types::Bytes::from(public_inputs.clone());
+
+    let are_inputs_valid = verify_zkbob_secret(&public_input_bytes, &private_inputs).await;
     if are_inputs_valid.is_err() {
-        return Ok(invalid_input_response(ask_id.clone(), public_inputs.clone()).await);
+        return Ok(invalid_input_response(
+            public_inputs.clone().into(),
+            enclave_private_key.clone(),
+        )
+        .await);
     }
 
     let are_inputs_valid = are_inputs_valid.unwrap();
 
     if !are_inputs_valid {
-        return Ok(invalid_input_response(ask_id.clone(), public_inputs.clone()).await);
+        return Ok(invalid_input_response(
+            public_inputs.clone().into(),
+            enclave_private_key.clone(),
+        )
+        .await);
     }
 
     let generate_proof_response = generate_zkbob_proof(
-        private_input,
-        public_inputs,
+        private_inputs,
+        public_inputs.clone().into(),
         "./params/transfer_params_prod.bin",
+        enclave_private_key,
     )
+    .await
     .unwrap();
     log::info!("proof: {:?}", generate_proof_response.proof);
 
@@ -167,18 +182,26 @@ fn circuit<C: CS<Fr = Fr>>(public: CTransferPub<C>, secret: CTransferSec<C>) {
 }
 
 //Generate Proof
-fn generate_zkbob_proof(
+async fn generate_zkbob_proof(
     secret_bytes: Vec<u8>,
     public_inputs_bytes: ethers::types::Bytes,
     transfer_params_path: &str,
+    enclave_private_key: Vec<u8>,
 ) -> Result<GenerateZkbobProof, Box<dyn std::error::Error>> {
     let params = param_gen(transfer_params_path);
+
+    let secp_private_key = secp256k1::SecretKey::from_slice(&enclave_private_key)
+        .unwrap()
+        .display_secret()
+        .to_string();
+    let signer_wallet = secp_private_key.parse::<LocalWallet>().unwrap();
+
     log::info!("Proof generation started...");
     let ts_prove = Instant::now();
 
     let secret = String::from_utf8(secret_bytes).unwrap();
     let secret: TransferSec<Fr> = serde_json::from_str(&secret).unwrap();
-    let public = decode_input(public_inputs_bytes).unwrap();
+    let public = decode_input(public_inputs_bytes.clone()).unwrap();
 
     let data = json!({
         "root": public[0].to_string(),
@@ -213,11 +236,18 @@ fn generate_zkbob_proof(
     ]);
 
     let encoded_data = encode(&[tokens]);
+    let digest = ethers::utils::keccak256(encoded_data.clone());
+
+    let signature = signer_wallet
+        .sign_message(ethers::types::H256(digest))
+        .await
+        .unwrap();
 
     let output = GenerateZkbobProof {
-        proof: Some(encoded_data.into()),
+        inputs: Some(public_inputs_bytes.clone()),
+        proof: Some(encoded_data.clone().into()),
         verification_status: res,
-        signature: None,
+        signature: Some("0x".to_owned() + &signature.to_string()),
     };
 
     Ok(output)
@@ -226,7 +256,7 @@ fn generate_zkbob_proof(
 pub fn benchmark_proof_generation(
     secret_bytes: Vec<u8>,
     public_inputs_bytes: ethers::types::Bytes,
-) -> Result<BenchmarkProofGenerationResponse, Box<dyn std::error::Error>> {
+) -> Result<BenchmarkResponse, Box<dyn std::error::Error>> {
     let params = param_gen("./params/transfer_params_prod.bin");
     log::info!("Proof generation started...");
     let ts_prove = Instant::now();
@@ -251,7 +281,7 @@ pub fn benchmark_proof_generation(
     let res = verifier::verify(&params.get_vk(), &snark_proof, &inputs);
     log::info!("Proof verification status : {:?}", res);
 
-    let output = BenchmarkProofGenerationResponse {
+    let output = BenchmarkResponse {
         proof_generation_time: duration.as_millis(),
     };
 

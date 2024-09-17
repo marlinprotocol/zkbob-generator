@@ -1,9 +1,14 @@
 use actix_web::error::Error;
 use ethers::types::Bytes;
+use crate::model;
+use crate::zkbob_generator;
 
 use libzeropool_zkbob::{
     fawkes_crypto::{
-        core::sizedvec::SizedVec, engines::bn256::Fr, ff_uint::Num,
+        backend::bellman_groth16::{engines::Bn256, prover::Proof, verifier, Parameters},
+        core::sizedvec::SizedVec,
+        engines::bn256::Fr,
+        ff_uint::Num,
         native::poseidon::poseidon_merkle_proof_root,
     },
     native::{
@@ -15,11 +20,17 @@ use libzeropool_zkbob::{
 };
 use serde_json::{json, Value};
 
-fn into_zkbob_secret(decoded_secret: String) -> Result<TransferSec<Fr>, Error> {
+fn into_zkbob_secret(decoded_secret: String) -> Result<TransferSec<Fr>, model::InputError> {
     let decoded_secret_bytes = hex::decode(decoded_secret).unwrap();
     let secret_string = String::from_utf8(decoded_secret_bytes).unwrap();
-    let secret_value: Value = serde_json::from_str(&secret_string).unwrap();
-    let zkbob_secret: TransferSec<Fr> = serde_json::from_value(secret_value).unwrap();
+    let secret_value = serde_json::from_str(&secret_string);
+    let secret;
+    if secret_value.is_err() {
+        return Err(model::InputError::InvalidInputPayload);
+    } else {
+        secret = secret_value.unwrap();
+    }
+    let zkbob_secret: TransferSec<Fr> = serde_json::from_value(secret).unwrap();
 
     Ok(zkbob_secret)
 }
@@ -76,7 +87,10 @@ pub async fn verify_zkbob_secret(
     let pub_input = hex::encode(public_input);
     let sec_input = hex::encode(private_inputs);
     let zkbob_public = into_zkbob_pub_input(pub_input.to_string()).unwrap();
-    let zkbob_secret = into_zkbob_secret(sec_input.to_string()).unwrap();
+    let zkbob_secret = match into_zkbob_secret(sec_input.to_string()) {
+        Ok(data) => data,
+        Err(e) => return Err(e.into()),
+    };
 
     // calculating output hashes
     let out_account_hash = zkbob_secret.tx.output.0.hash(&POOL_PARAMS.clone());
@@ -126,4 +140,52 @@ pub fn from_bool_to_num(path: SizedVec<bool, 48>) -> Result<Num<Fr>, Error> {
         acc += k * num;
     }
     Ok(acc)
+}
+
+pub async fn verify_zkbob_inputs_and_proof(
+    payload: kalypso_ivs_models::models::VerifyInputsAndProof,
+) -> Result<bool, Error> {
+    let params = param_gen("./params/transfer_params_prod.bin");
+    let mut result = false;
+    let proof = payload.clone().proof;
+    let proof_str = std::str::from_utf8(&proof).unwrap();
+    let proof_value: Value = serde_json::from_str(&proof_str).unwrap();
+    let proof_structure: Proof<Bn256> = serde_json::from_value(proof_value).unwrap();
+
+    let public_input = payload.clone().public_input.unwrap();
+    let public_input_bytes = ethers::types::Bytes::from(public_input);
+    let private_input = payload.clone().private_input.unwrap();
+
+    // verify the inputs
+    let verify_inputs = verify_zkbob_secret(&public_input_bytes, &private_input)
+        .await
+        .unwrap();
+
+    let public = zkbob_generator::decode_input(public_input_bytes.clone()).unwrap();
+
+    let data = json!({
+        "root": public[0].to_string(),
+        "nullifier": public[1].to_string(),
+        "out_commit": public[2].to_string(),
+        "delta": public[3].to_string(),
+        "memo": public[4].to_string()
+    });
+
+    let public: TransferPub<Fr> = serde_json::from_value(data).unwrap();
+    let inputs = vec![public.clone().root, public.clone().nullifier, public.clone().out_commit, public.clone().delta, public.clone().memo];
+
+    let verify_proof = verifier::verify(&params.get_vk(), &proof_structure, &inputs);
+
+    if verify_inputs && verify_proof {
+        result = true;
+    }
+
+    return Ok(result);
+}
+
+fn param_gen(transfer_params_path: &str) -> Parameters<Bn256> {
+    let param_file = std::fs::read(transfer_params_path).unwrap();
+    let mut param_format: &[u8] = &param_file;
+    let params: Parameters<Bn256> = Parameters::read(&mut param_format, true, true).unwrap();
+    params
 }
