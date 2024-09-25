@@ -1,8 +1,8 @@
 use crate::model;
 use crate::zkbob_generator;
 use actix_web::error::Error;
-use ethers::types::Bytes;
 use ethers::abi::{decode, ParamType};
+use ethers::types::Bytes;
 
 use libzeropool_zkbob::{
     fawkes_crypto::{
@@ -197,9 +197,7 @@ fn param_gen(transfer_params_path: &str) -> Parameters<Bn256> {
     params
 }
 
-pub fn decode_proof(
-    encoded_input: Vec<u8>,
-) -> Result<Proof<Bn256>, model::InputError> {
+pub fn decode_proof(encoded_input: Vec<u8>) -> Result<Proof<Bn256>, model::InputError> {
     let param_types = vec![ParamType::Bytes, ParamType::Bytes, ParamType::Bytes];
     let tokens = match decode(&param_types, &encoded_input.as_slice()) {
         Ok(data) => data,
@@ -208,7 +206,16 @@ pub fn decode_proof(
         }
     };
 
-    let proof_param_types = vec![ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256)];
+    let proof_param_types = vec![
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+        ParamType::Uint(256),
+    ];
     let proof = tokens[1].clone().into_bytes().unwrap();
     let proof_parts = match decode(&proof_param_types, &proof.as_slice()) {
         Ok(data) => data,
