@@ -1,7 +1,8 @@
-use actix_web::error::Error;
-use ethers::types::Bytes;
 use crate::model;
 use crate::zkbob_generator;
+use actix_web::error::Error;
+use ethers::types::Bytes;
+use ethers::abi::{decode, ParamType};
 
 use libzeropool_zkbob::{
     fawkes_crypto::{
@@ -18,7 +19,7 @@ use libzeropool_zkbob::{
     },
     POOL_PARAMS,
 };
-use serde_json::{json, Value};
+use serde_json::json;
 
 fn into_zkbob_secret(decoded_secret: String) -> Result<TransferSec<Fr>, model::InputError> {
     let decoded_secret_bytes = hex::decode(decoded_secret).unwrap();
@@ -147,10 +148,6 @@ pub async fn verify_zkbob_inputs_and_proof(
 ) -> Result<bool, Error> {
     let params = param_gen("./params/transfer_params_prod.bin");
     let mut result = false;
-    let proof = payload.clone().proof;
-    let proof_str = std::str::from_utf8(&proof).unwrap();
-    let proof_value: Value = serde_json::from_str(&proof_str).unwrap();
-    let proof_structure: Proof<Bn256> = serde_json::from_value(proof_value).unwrap();
 
     let public_input = payload.clone().public_input.unwrap();
     let public_input_bytes = ethers::types::Bytes::from(public_input);
@@ -161,6 +158,7 @@ pub async fn verify_zkbob_inputs_and_proof(
         .await
         .unwrap();
 
+    // verify the proof with corresponding public inputs
     let public = zkbob_generator::decode_input(public_input_bytes.clone()).unwrap();
 
     let data = json!({
@@ -172,7 +170,16 @@ pub async fn verify_zkbob_inputs_and_proof(
     });
 
     let public: TransferPub<Fr> = serde_json::from_value(data).unwrap();
-    let inputs = vec![public.clone().root, public.clone().nullifier, public.clone().out_commit, public.clone().delta, public.clone().memo];
+    let inputs = vec![
+        public.clone().root,
+        public.clone().nullifier,
+        public.clone().out_commit,
+        public.clone().delta,
+        public.clone().memo,
+    ];
+
+    let proof_received = payload.clone().proof;
+    let proof_structure = decode_proof(proof_received).unwrap();
 
     let verify_proof = verifier::verify(&params.get_vk(), &proof_structure, &inputs);
 
@@ -188,4 +195,32 @@ fn param_gen(transfer_params_path: &str) -> Parameters<Bn256> {
     let mut param_format: &[u8] = &param_file;
     let params: Parameters<Bn256> = Parameters::read(&mut param_format, true, true).unwrap();
     params
+}
+
+pub fn decode_proof(
+    encoded_input: Vec<u8>,
+) -> Result<Proof<Bn256>, model::InputError> {
+    let param_types = vec![ParamType::Bytes, ParamType::Bytes, ParamType::Bytes];
+    let tokens = match decode(&param_types, &encoded_input.as_slice()) {
+        Ok(data) => data,
+        Err(_) => {
+            return Err(model::InputError::DecodeFailed);
+        }
+    };
+
+    let proof_param_types = vec![ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256), ParamType::Uint(256)];
+    let proof = tokens[1].clone().into_bytes().unwrap();
+    let proof_parts = match decode(&proof_param_types, &proof.as_slice()) {
+        Ok(data) => data,
+        Err(_) => {
+            return Err(model::InputError::DecodeFailed);
+        }
+    };
+    let proof_reconstructed = json!({
+        "a": [proof_parts[0].clone().into_uint().unwrap().to_string(), proof_parts[1].clone().into_uint().unwrap().to_string()],
+        "b": [[proof_parts[2].clone().into_uint().unwrap().to_string(), proof_parts[3].clone().into_uint().unwrap().to_string()], [proof_parts[4].clone().into_uint().unwrap().to_string(), proof_parts[5].clone().into_uint().unwrap().to_string()]],
+        "c": [proof_parts[6].clone().into_uint().unwrap().to_string(), proof_parts[7].clone().into_uint().unwrap().to_string()]
+    });
+    let proof_structure: Proof<Bn256> = serde_json::from_value(proof_reconstructed).unwrap();
+    return Ok(proof_structure);
 }

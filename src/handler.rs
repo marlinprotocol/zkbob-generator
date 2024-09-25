@@ -203,7 +203,16 @@ async fn check_encrypted_input(
         let signer_wallet = get_signer(ecies_priv_key);
         let digest = ethers::utils::keccak256(message.as_bytes());
 
-        let read_secp_pub_key = fs::read("/app/secp.pub").unwrap();
+        let read_secp_pub_key = match fs::read("/app/secp.pub") {
+            Ok(data) => data,
+            Err(_) => {
+                return response(
+                    "There was an issue while reading the secp public key.",
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    None,
+                );
+            }
+        };
         let mut modified_secp_pub_key = vec![0x04];
         modified_secp_pub_key.extend_from_slice(&read_secp_pub_key);
         let signature = signer_wallet
@@ -347,7 +356,6 @@ async fn generate_invalid_input_attestation(
     let response = kalypso_generator_models::models::GenerateProofResponse {
         proof: signature.to_vec(),
     };
-
     return response;
 }
 
