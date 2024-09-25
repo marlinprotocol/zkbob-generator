@@ -11,34 +11,17 @@ use std::fs;
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     let mut handles = vec![];
-
     let port: u16 = 3030;
-    let port_clone = port.clone().to_string();
-    let enclave_key = hex::encode(fs::read("/app/secp.sec").unwrap());
-    println!("enclave key: {}", enclave_key);
+    let port_clone = port.clone();
 
-    let enclave_key_clone = enclave_key.clone();
-    let handle_1 = tokio::spawn(async {
+    let handle_1 = tokio::spawn(async move {
         let listener =
-            kalypso_listener::job_creator::JobCreator::simple_listener_for_confidential_prover(
-                "0x6A527B949Fb76672FBf45F881eE2A4281E401d06".into(),
-                enclave_key_clone,
-                "2".into(),
-                "https://arb-sepolia.g.alchemy.com/v2/cFwacd_RbVpNrezyxZEvO6AnnCuO-kxt".into(),
-                "c53dd8e14d0a4f8fa7b87c66adfc0d6197159732fd29517ea6783741423b9f54".into(),
-                "0x0b6340a893B944BDc3B4F012e934b724c83abF97".into(),
-                "0x5ce3e1010028C4F5687356D721e3e2B6DcEA7C25".into(),
-                82100000,
-                421614,
-                port_clone,
-                false,
-                10,
-            );
-
+            get_kalypso_job_creator().unwrap_or_else(|_| get_default_job_creator(port_clone));
         listener.run().await
     });
     handles.push(handle_1);
 
+    let enclave_key = hex::encode(fs::read("/app/secp.sec").unwrap());
     let handle_2 = tokio::spawn(server::ProvingServer::new(enclave_key, port).start_server());
     handles.push(handle_2);
 
@@ -49,6 +32,54 @@ async fn main() -> std::io::Result<()> {
     println!("All tasks completed or shutdown.");
 
     Ok(())
+}
+
+fn get_kalypso_job_creator() -> anyhow::Result<kalypso_listener::job_creator::JobCreator> {
+    let generator_config_path = "./generator_config/generator_config.json".to_string();
+    let alt_generator_config_path = "../generator_config/generator_config.json".to_string();
+    let file_content = fs::read_to_string(&generator_config_path)
+        .or_else(|_| fs::read_to_string(&alt_generator_config_path))?;
+
+    println!("{}", &file_content);
+    let config: kalypso_listener::job_creator::Config = serde_json::from_str(&file_content)?;
+
+    let runtime_config_path = "./generator_config/runtime_config.json".to_string();
+    let alt_runtime_config_path = "../generator_config/runtime_config.json".to_string();
+    let file_content = fs::read_to_string(&runtime_config_path)
+        .or_else(|_| fs::read_to_string(&alt_runtime_config_path))?;
+    println!("{}", &file_content);
+    let runtime_config: kalypso_listener::job_creator::RuntimeConfig =
+        serde_json::from_str(&file_content)?;
+
+    Ok(kalypso_listener::job_creator::JobCreator::new(
+        config,
+        runtime_config,
+        10,
+        false,
+    ))
+}
+
+fn get_default_job_creator(port: u16) -> kalypso_listener::job_creator::JobCreator {
+    let port_clone = port.clone().to_string();
+    let enclave_key = hex::encode(fs::read("/app/secp.sec").unwrap());
+    println!("enclave key: {}", enclave_key);
+
+    let enclave_key_clone = enclave_key.clone();
+
+    kalypso_listener::job_creator::JobCreator::simple_listener_for_confidential_prover(
+        "0x6A527B949Fb76672FBf45F881eE2A4281E401d06".into(),
+        enclave_key_clone,
+        "2".into(),
+        "https://arb-sepolia.g.alchemy.com/v2/cFwacd_RbVpNrezyxZEvO6AnnCuO-kxt".into(),
+        "c53dd8e14d0a4f8fa7b87c66adfc0d6197159732fd29517ea6783741423b9f54".into(),
+        "0x0b6340a893B944BDc3B4F012e934b724c83abF97".into(),
+        "0x5ce3e1010028C4F5687356D721e3e2B6DcEA7C25".into(),
+        82100000,
+        421614,
+        port_clone,
+        false,
+        10,
+    )
 }
 
 #[cfg(test)]

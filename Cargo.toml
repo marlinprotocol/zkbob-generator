@@ -28,7 +28,7 @@ kalypso_ivs_models = { git = "https://github.com/marlinprotocol/kalypso-unified.
 kalypso_generator_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "generator" }
 bindings = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "foundry-contracts" }
 kalypso_matching_engine_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "matching_engine" }
-kalypso_listener = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "listener", features = ["force_transactions"] }
+kalypso_listener = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "listener" }
 
 # kalypso_helper = { path = "../kalypso-unified/helper", package = "helper" }
 # kalypso_ivs_models = { path = "../kalypso-unified/ivs", package = "ivs" }
