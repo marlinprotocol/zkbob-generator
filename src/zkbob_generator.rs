@@ -235,7 +235,14 @@ async fn generate_zkbob_proof(
         Token::Uint(proof.c[1]),
     ]);
 
-    let encoded_data = encode(&[tokens]);
+    let encoded_proof = encode(&[tokens]);
+
+    let value = vec![
+        ethers::abi::Token::Bytes(public_inputs_bytes.to_vec()),
+        ethers::abi::Token::Bytes(encoded_proof),
+    ];
+
+    let encoded_data = encode(&value);
     let digest = ethers::utils::keccak256(encoded_data.clone());
 
     let signature = signer_wallet
