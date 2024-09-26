@@ -17,7 +17,7 @@ use serde::Deserialize;
 use std::str;
 use std::time::Instant;
 
-use ethers::abi::{decode, encode, ParamType, Token};
+use ethers::abi::{decode, ParamType, Token};
 use ethers::types::Bytes;
 use ethers::types::U256;
 
@@ -235,15 +235,15 @@ async fn generate_zkbob_proof(
         Token::Uint(proof.c[1]),
     ]);
 
-    let encoded_proof = encode(&[tokens]);
+    let encoded_proof = ethers::abi::encode(&[tokens]);
 
     let value = vec![
         ethers::abi::Token::Bytes(public_inputs_bytes.to_vec()),
         ethers::abi::Token::Bytes(encoded_proof),
     ];
 
-    let encoded_data = encode(&value);
-    let digest = ethers::utils::keccak256(encoded_data.clone());
+    let encoded_data = ethers::abi::encode(&value);
+    let digest = ethers::utils::keccak256(&encoded_data);
 
     let signature = signer_wallet
         .sign_message(ethers::types::H256(digest))

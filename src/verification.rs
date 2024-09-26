@@ -37,7 +37,6 @@ fn into_zkbob_secret(decoded_secret: String) -> Result<TransferSec<Fr>, model::I
 }
 
 fn into_zkbob_pub_input(decoded_pub_input: String) -> Result<TransferPub<Fr>, Error> {
-    use ethers::abi::{decode, ParamType};
     use ethers::prelude::*;
 
     fn decode_input(
