@@ -239,11 +239,11 @@ async fn generate_zkbob_proof(
 
     let proof_for_tee_verifier = vec![
         ethers::abi::Token::Bytes(public_inputs_bytes.to_vec()),
-        ethers::abi::Token::Bytes(actual_proof),
+        ethers::abi::Token::Bytes(actual_proof.clone().to_vec()),
     ];
 
-    let encoded_proof_for_tee = ethers::abi::encode(&proof_for_tee_verifier);
-    let digest = ethers::utils::keccak256(&encoded_proof_for_tee);
+    let data_to_sign = ethers::abi::encode(&proof_for_tee_verifier);
+    let digest = ethers::utils::keccak256(&data_to_sign);
 
     let signature = signer_wallet
         .sign_message(ethers::types::H256(digest))
@@ -252,7 +252,7 @@ async fn generate_zkbob_proof(
 
     let output = GenerateZkbobProof {
         inputs: Some(public_inputs_bytes.clone()),
-        proof: Some(encoded_proof_for_tee.clone().into()),
+        proof: Some(actual_proof.into()),
         verification_status: res,
         signature: Some("0x".to_owned() + &signature.to_string()),
     };
