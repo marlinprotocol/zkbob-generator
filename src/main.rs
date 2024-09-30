@@ -681,7 +681,7 @@ mod tests {
             acl: acl_data,
             encrypted_secrets: encrypted_data,
             me_decryption_url: "http://13.201.131.193:3000/decryptRequest".into(),
-            market_id: "1".into(),
+            market_id: "7".into(),
             public_inputs: Some(public_input),
         };
 
@@ -739,7 +739,7 @@ mod tests {
             acl: encrypted_data.acl_data,
             encrypted_secrets: encrypted_data.encrypted_data,
             me_decryption_url: "http://13.201.131.193:3000/decryptRequest".into(),
-            market_id: "19".into(),
+            market_id: "7".into(),
             public_inputs: None,
         };
 
