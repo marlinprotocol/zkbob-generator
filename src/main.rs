@@ -23,7 +23,7 @@ async fn main() -> std::io::Result<()> {
             kalypso_listener::job_creator::JobCreator::simple_listener_for_confidential_prover(
                 "0x6A527B949Fb76672FBf45F881eE2A4281E401d06".into(),
                 enclave_key_clone,
-                "2".into(),
+                "7".into(),
                 "https://arb-sepolia.g.alchemy.com/v2/cFwacd_RbVpNrezyxZEvO6AnnCuO-kxt".into(),
                 "c53dd8e14d0a4f8fa7b87c66adfc0d6197159732fd29517ea6783741423b9f54".into(),
                 "0x0b6340a893B944BDc3B4F012e934b724c83abF97".into(),
@@ -380,7 +380,7 @@ mod tests {
             acl: encrypted_data.acl_data,
             encrypted_secrets: encrypted_data.encrypted_data,
             me_decryption_url: "http://13.201.131.193:3000/decryptRequest".into(),
-            market_id: "1".into(),
+            market_id: "7".into(),
             public_inputs: Some(public_input),
         };
 
@@ -830,7 +830,7 @@ mod tests {
             };
 
         fs::write(
-            "inputs_and_proof_verify.json",
+            "7_verify_inputs_and_proof_payload.json",
             serde_json::to_string(&payload).unwrap(),
         )
         .await
@@ -868,7 +868,7 @@ mod tests {
 
         #[derive(Serialize, Deserialize, Debug)]
         struct JsonResponse {
-            status: String,
+            // status: String,
             message: String,
             data: Option<MatchingEnginePublicKeys>,
         }
