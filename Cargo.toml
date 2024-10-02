@@ -26,7 +26,7 @@ anyhow = "1.0.86"
 kalypso_helper = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "helper" }
 kalypso_ivs_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "ivs" }
 kalypso_generator_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "generator" }
-bindings = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "foundry-contracts" }
+# bindings = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "foundry-contracts" }
 kalypso_matching_engine_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "matching_engine" }
 kalypso_listener = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "listener" }
 

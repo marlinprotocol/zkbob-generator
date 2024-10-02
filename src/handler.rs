@@ -203,7 +203,7 @@ async fn check_encrypted_input(
         let signer_wallet = get_signer(ecies_priv_key);
         let digest = ethers::utils::keccak256(message.as_bytes());
 
-        let read_secp_pub_key = match fs::read("/app/secp.pub") {
+        let read_secp_pub_key = match fs::read("./app/secp.pub") {
             Ok(data) => data,
             Err(_) => {
                 return response(
@@ -235,6 +235,7 @@ async fn check_encrypted_input(
         .send()
         .await
         .unwrap();
+    println!("Handler, me decrypt response: {:?}", api_response);
 
     if api_response.status().is_success() {
         let response_payload: kalypso_matching_engine_models::models::GetRequestResponse =
